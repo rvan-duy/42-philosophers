@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/25 19:40:45 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/25 19:50:15 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 
 // can do this cleaner
+// check for if there are letters inside the string
 static t_status	error_negative(t_arguments arg)
 {
 	if (arg == NUMBER_OF_PHILOSOPHERS)
@@ -63,8 +64,6 @@ static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 		*num = *num * 10 + str[i] - 48;
 		i++;
 	}
-	if (*num < 0)
-		return (error_negative(arg));
 	if (*num == 0)
 		return (error_zero(arg));
 	return (SUCCESS);
