@@ -6,76 +6,77 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/25 17:40:55 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/25 19:50:15 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
 
-static t_return_status	error_negative(int argument_num)
+// can do this cleaner
+// check for if there are letters inside the string
+static t_status	error_negative(t_arguments arg)
 {
-	if (argument_num == NUMBER_OF_PHILOSOPHERS)
+	if (arg == NUMBER_OF_PHILOSOPHERS)
 		printf("number_of_philosophers");
-	else if (argument_num == TIME_TO_DIE)
+	else if (arg == TIME_TO_DIE)
 		printf("time_to_die");
-	else if (argument_num == TIME_TO_EAT)
+	else if (arg == TIME_TO_EAT)
 		printf("time_to_eat");
-	else if (argument_num == TIME_TO_SLEEP)
+	else if (arg == TIME_TO_SLEEP)
 		printf("time_to_sleep");
-	else if (argument_num == MAX_EAT_COUNT)
+	else if (arg == MAX_EAT_COUNT)
 		printf("number_of_times_each_philosopher_must_eat");
 	printf(" cannot be negative\n");
 	return (FAILURE);
 }
 
-static t_return_status	error_zero(int argument_num)
+static t_status	error_zero(t_arguments arg)
 {
-	if (argument_num == NUMBER_OF_PHILOSOPHERS)
+	if (arg == NUMBER_OF_PHILOSOPHERS)
 		printf("number_of_philosophers");
-	else if (argument_num == TIME_TO_DIE)
+	else if (arg == TIME_TO_DIE)
 		printf("time_to_die");
-	else if (argument_num == TIME_TO_EAT)
+	else if (arg == TIME_TO_EAT)
 		printf("time_to_eat");
-	else if (argument_num == TIME_TO_SLEEP)
+	else if (arg == TIME_TO_SLEEP)
 		printf("time_to_sleep");
-	else if (argument_num == MAX_EAT_COUNT)
+	else if (arg == MAX_EAT_COUNT)
 		printf("number_of_times_each_philosopher_must_eat");
 	printf(" cannot be zero\n");
 	return (FAILURE);
 }
 
-static size_t	philo_atoi(char *str, int argument_num)
+static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 {
-	int	number;
 	int	i;
 
-	number = 0;
+	*num = 0;
 	i = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;
 	if (str[i] == '-')
-		return (error_negative(argument_num));
+		return (error_negative(arg));
 	if (str[i] == '+')
 		i++;
 	while (str[i] != '\0' && str[i] >= 48 && str[i] <= 57)
 	{
-		number = number * 10 + str[i] - 48;
+		*num = *num * 10 + str[i] - 48;
 		i++;
 	}
-	if (number < 0)
-		return (error_negative(argument_num));
-	if (number == 0)
-		return (error_zero(argument_num));
-	return (number);
+	if (*num == 0)
+		return (error_zero(arg));
+	return (SUCCESS);
 }
 
-static t_return_status	init_data(t_data *data, int argc, char **argv)
+static t_status	init_data(t_data *data, int argc, char **argv)
 {
-	data->number_of_philosophers = philo_atoi(argv[1], 1);
-	data->time_to_die = philo_atoi(argv[2], 2);
-	data->time_to_eat = philo_atoi(argv[3], 3);
-	data->time_to_sleep = philo_atoi(argv[4], 4);
+	printf("philo_atoi return: %d\n", philo_atoi(&data->number_of_philosophers, argv[1], NUMBER_OF_PHILOSOPHERS));
+	printf("philo_atoi return: %d\n", philo_atoi(&data->time_to_die, argv[2], TIME_TO_DIE));
+	printf("philo_atoi return: %d\n", philo_atoi(&data->time_to_eat, argv[3], TIME_TO_EAT));
+	printf("philo_atoi return: %d\n", philo_atoi(&data->time_to_sleep, argv[4], TIME_TO_SLEEP));
+	if (argc == 6)
+		printf("philo_atoi return: %d\n", philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT));
 	return (SUCCESS);
 }
 
@@ -92,5 +93,6 @@ int	main(int argc, char **argv)
 	printf("%zu\n", data.time_to_die);
 	printf("%zu\n", data.time_to_eat);
 	printf("%zu\n", data.time_to_sleep);
+	printf("%zu\n", data.max_eat_count);
 	return (EXIT_SUCCESS);
 }
