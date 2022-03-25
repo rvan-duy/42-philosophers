@@ -6,7 +6,7 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/03/25 16:30:18 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/03/25 16:48:11 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,14 @@ CFLAGS			:= -Wall -Wextra -Werror
 
 ################################################################################
 
-ifdef THREAD_DEBUG
+ifdef THREAD
 CFLAGS			+= -fsanitize=thread
 endif
-ifdef SANITIZE
+ifdef ADDRESS
 CFLAGS			+= -fsanitize=address -g3
+endif
+ifdef NO_FLAGS
+CFLAGS			:= 
 endif
 
 ################################################################################
