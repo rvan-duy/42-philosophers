@@ -6,7 +6,7 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/03/25 16:48:11 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/03/26 16:42:13 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ endif
 HEADERS 		:= include/philo.h
 INCLUDE_FLAGS 	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
-SOURCES 		:= src/main.c
+SOURCES 		:= 	src/main.c \
+					src/start_philos.c
 
 BOLD 			:= \e[1m
 RESET 			:= \e[0m
