@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: philo
-      run:  make
+      run:  make re
       
   macos_compile_check:
 
@@ -23,4 +23,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: philo
-      run:  make
+      run:  make re
