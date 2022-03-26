@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/25 19:34:51 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/26 13:39:19 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdlib.h>
 
 typedef struct s_data {
-	size_t	number_of_philosophers;
+	size_t	num_of_philo;
 	size_t	time_to_die;
 	size_t	time_to_eat;
 	size_t	time_to_sleep;
@@ -29,7 +29,7 @@ typedef enum e_status {
 }	t_status;
 
 typedef enum e_arguments {
-	NUMBER_OF_PHILOSOPHERS,
+	NUM_OF_PHILO,
 	TIME_TO_DIE,
 	TIME_TO_EAT,
 	TIME_TO_SLEEP,
