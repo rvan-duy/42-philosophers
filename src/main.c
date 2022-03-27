@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/27 14:30:42 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/27 14:55:21 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,24 +76,23 @@ static t_status	init_data(t_data *data, int argc, char **argv)
 	return (status);
 }
 
-static t_status	malloc_philos(size_t number_of_philosophers, t_philo ***philos)
+static t_status	malloc_philos(size_t number_of_philosophers, t_philo **philos)
 {
 	size_t	i;
 
-	*philos = my_calloc(number_of_philosophers, sizeof(t_philo *));
-	if (*philos == NULL)
+	philos = my_calloc(number_of_philosophers, sizeof(t_philo *));
+	if (philos == NULL)
 		return (FAILURE);
 	i = 0;
 	while (i < number_of_philosophers)
 	{
-		*philos[i] = my_calloc(1, sizeof(t_philo));
-		if (*philos[i] == NULL)
+		philos[i] = my_calloc(1, sizeof(t_philo));
+		if (philos[i] == NULL)
 		{
 			while (--i > 0)
-				free(*philos[i]);
+				free(philos[i]);
 			return (FAILURE);
 		}
-		printf("%zu\n", i);
 		i++;
 	}
 	return (SUCCESS);
@@ -102,16 +101,15 @@ static t_status	malloc_philos(size_t number_of_philosophers, t_philo ***philos)
 int	main(int argc, char **argv)
 {
 	t_data	data;
-	t_philo	**philos;
+	t_philo	*philos;
 
 	if (argc == 5 || argc == 6)
 	{
 		if (init_data(&data, argc, argv) == FAILURE)
 			return (EXIT_FAILURE);
-		printf("sizeof one struct is: %zu * %s = %zu\n", sizeof(t_philo), argv[1], sizeof(t_philo) * data.num_of_philo);
 		if (malloc_philos(data.num_of_philo, &philos) == FAILURE)
 			return (EXIT_FAILURE);
-		start_philos(&data, philos);
+		start_philos(&data, &philos);
 	}
 	return (EXIT_SUCCESS);
 }
