@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/26 17:44:52 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/27 14:30:42 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,19 @@ static t_status	malloc_philos(size_t number_of_philosophers, t_philo ***philos)
 {
 	size_t	i;
 
-	*philos = malloc(sizeof(t_philo *) * number_of_philosophers);
+	*philos = my_calloc(number_of_philosophers, sizeof(t_philo *));
 	if (*philos == NULL)
 		return (FAILURE);
-	memset(*philos, 0, sizeof(t_philo *) * number_of_philosophers);
 	i = 0;
 	while (i < number_of_philosophers)
 	{
-		*philos[i] = malloc(sizeof(t_philo));
+		*philos[i] = my_calloc(1, sizeof(t_philo));
 		if (*philos[i] == NULL)
 		{
 			while (--i > 0)
 				free(*philos[i]);
 			return (FAILURE);
 		}
-		memset(*philos[i], 0, sizeof(t_philo));
 		printf("%zu\n", i);
 		i++;
 	}
