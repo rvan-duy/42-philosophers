@@ -6,17 +6,52 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 15:44:23 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 16:50:50 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// grab 2 forks
-// eat for some time
-void	eat(t_philo *philo_data)
+static void	hold_forks(t_philo *philo_data)
 {
-	printf("%u\n", get_timestamp(philo_data->data));
-	printf("left_fork: %p right_fork: %p\n", philo_data->left_fork, philo_data->right_fork);
-	printf("Hoi %ld\n", philo_data->seat);
+	if (philo_data->seat % 2 == 0)
+	{
+		pthread_mutex_lock(philo_data->left_fork);
+		protected_print("has taken a fork", philo_data);
+		pthread_mutex_lock(philo_data->right_fork);
+		protected_print("has taken a fork", philo_data);
+	}
+	else
+	{
+		pthread_mutex_lock(philo_data->right_fork);
+		protected_print("has taken a fork", philo_data);
+		pthread_mutex_lock(philo_data->left_fork);
+		protected_print("has taken a fork", philo_data);
+	}
+}
+
+static void	drop_forks(t_philo *philo_data)
+{
+	pthread_mutex_unlock(philo_data->left_fork);
+	pthread_mutex_unlock(philo_data->right_fork);
+}
+
+void	go_eat(t_philo *philo_data)
+{
+	hold_forks(philo_data);
+	protected_print("is eating", philo_data);
+	my_usleep(philo_data->data->time_to_eat * 1000);
+	drop_forks(philo_data);
+}
+
+void	go_sleep(t_philo *philo_data)
+{
+	protected_print("is sleeping", philo_data);
+	my_usleep(philo_data->data->time_to_sleep * 1000);
+}
+
+void	go_think(t_philo *philo_data)
+{
+	protected_print("is thinking", philo_data);
+	go_eat(philo_data);
 }

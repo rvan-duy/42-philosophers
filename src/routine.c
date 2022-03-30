@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:59:19 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 16:49:35 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	*routine(void *arg)
 {
-	eat(arg);
+	go_eat(arg);
+	while (true)
+	{
+		go_sleep(arg);
+		go_think(arg);
+	}
 	return (NULL);
 }
