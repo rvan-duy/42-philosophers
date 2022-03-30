@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 19:58:50 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 20:21:45 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ static void	drop_forks(t_philo *philo_data)
 
 void	go_eat(t_philo *philo_data)
 {
-	hold_forks(philo_data);
-	protected_print("is eating", philo_data);
+	if (check_for_dead(philo_data) == false)
+		hold_forks(philo_data);
+	if (check_for_dead(philo_data) == false)
+		protected_print("is eating", philo_data);
 	my_usleep(philo_data->data->time_to_eat * 1000, philo_data);
 	philo_data->times_eaten++;
 	drop_forks(philo_data);
@@ -47,12 +49,14 @@ void	go_eat(t_philo *philo_data)
 
 void	go_sleep(t_philo *philo_data)
 {
-	protected_print("is sleeping", philo_data);
+	if (check_for_dead(philo_data) == false)
+		protected_print("is sleeping", philo_data);
 	my_usleep(philo_data->data->time_to_sleep * 1000, philo_data);
 }
 
 void	go_think(t_philo *philo_data)
 {
-	protected_print("is thinking", philo_data);
+	if (check_for_dead(philo_data) == false)
+		protected_print("is thinking", philo_data);
 	go_eat(philo_data);
 }

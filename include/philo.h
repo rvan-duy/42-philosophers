@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 19:47:39 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 20:20:04 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,6 @@ int			my_usleep(useconds_t microseconds, t_philo *philo);
 void		*my_calloc(size_t nmemb, size_t size);
 void		protected_print(char *msg, t_philo *philo);
 useconds_t	get_timestamp(t_data *data);
-bool		check_if_dead(t_philo *philo);
+bool		check_for_dead(t_philo *philo_data);
 
 #endif

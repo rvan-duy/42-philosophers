@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/26 16:44:32 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 19:01:49 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 20:11:10 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,28 @@ static t_status	wait_for_threads(size_t num, pthread_t *threads)
 	return (SUCCESS);
 }
 
+static void	check_for_deads(size_t num, t_philo *philos)
+{
+	size_t	i;
+
+	while (true)
+	{
+		i = 0;
+		while (i < num)
+		{
+			if (philos[i].time_since_last_meal > philos[i].data->time_to_die)
+			{
+				pthread_mutex_lock(&philos[i].data->philo_died_lock);
+				protected_print("died", philos);
+				philos[i].data->philo_died = true;
+				pthread_mutex_unlock(&philos[i].data->philo_died_lock);
+				return ;
+				i++;
+			}
+		}
+	}
+}
+
 t_status	start_threads(t_data *data, t_philo *philos)
 {
 	pthread_t	*threads;
@@ -50,6 +72,7 @@ t_status	start_threads(t_data *data, t_philo *philos)
 		return (FAILURE);
 	if (create_threads(data->num_of_philo, threads, philos) == FAILURE)
 		return (FAILURE);
+	check_for_deads(data->num_of_philo, philos);
 	if (wait_for_threads(data->num_of_philo, threads) == FAILURE)
 		return (FAILURE);
 	free(threads);

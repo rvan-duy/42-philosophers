@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 19:55:52 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 20:19:54 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int	my_usleep(useconds_t microseconds, t_philo *philo)
 	{
 		if (usleep(1) != SUCCESS)
 			return (FAILURE);
-		if (check_if_dead(philo) == true)
-			return (SUCCESS);
 		current_time.tv_usec++;
 		philo->time_since_last_meal++;
 	}
@@ -62,24 +60,17 @@ void	protected_print(char *msg, t_philo *philo)
 	pthread_mutex_unlock(&philo->data->print_lock);
 }
 
-// checks if philo is dead, if not already announced it will announce it
-bool	check_if_dead(t_philo *philo)
+bool	check_for_dead(t_philo *philo_data)
 {
-	if (philo->time_since_last_meal > philo->data->time_to_die)
+	pthread_mutex_lock(&philo_data->data->philo_died_lock);
+	if (philo_data->data->philo_died == true)
 	{
-		pthread_mutex_lock(&philo->data->philo_died_lock);
-		if (philo->data->philo_died == true)
-		{
-			pthread_mutex_unlock(&philo->data->philo_died_lock);
-			return (true);
-		}
-		else
-		{
-			protected_print("died", philo);
-			philo->data->philo_died = true;
-			pthread_mutex_unlock(&philo->data->philo_died_lock);
-			return (true);
-		}
+		pthread_mutex_unlock(&philo_data->data->philo_died_lock);
+		return (true);
 	}
-	return (false);
+	else
+	{
+		pthread_mutex_unlock(&philo_data->data->philo_died_lock);
+		return (false);
+	}
 }
