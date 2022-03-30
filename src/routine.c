@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 18:34:12 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 19:47:49 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*routine(void *arg)
 	{
 		go_sleep(arg);
 		go_think(arg);
-		if (has_eaten_enough(arg) == true)
+		if (has_eaten_enough(arg) == true || check_if_dead(arg) == true)
 			break ;
 	}
 	return (NULL);

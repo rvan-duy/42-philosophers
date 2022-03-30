@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 16:51:07 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 19:47:39 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@ typedef struct s_data {
 	struct timeval	start_time;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
+	bool			philo_died;
+	pthread_mutex_t	philo_died_lock;
 }	t_data;
 
 typedef struct s_philo {
 	size_t			seat;
 	size_t			times_eaten;
+	useconds_t		time_since_last_meal;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
@@ -66,9 +69,10 @@ void		destroy_data(t_data *data);
 void		destroy_philos(t_philo **philos);
 
 // utils
-int			my_usleep(useconds_t microseconds);
+int			my_usleep(useconds_t microseconds, t_philo *philo);
 void		*my_calloc(size_t nmemb, size_t size);
 void		protected_print(char *msg, t_philo *philo);
 useconds_t	get_timestamp(t_data *data);
+bool		check_if_dead(t_philo *philo);
 
 #endif

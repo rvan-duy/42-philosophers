@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 15:54:01 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 19:40:21 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ t_status	init_data(t_data *data, int argc, char **argv)
 			status = FAILURE;
 	}
 	pthread_mutex_init(&data->print_lock, NULL);
+	pthread_mutex_init(&data->philo_died_lock, NULL);
 	gettimeofday(&data->start_time, NULL);
+	data->philo_died = false;
 	return (status);
 }
 
@@ -112,5 +114,6 @@ void	destroy_data(t_data *data)
 		i++;
 	}
 	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_destroy(&data->philo_died_lock);
 	free(data->forks);
 }
