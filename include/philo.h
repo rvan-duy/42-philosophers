@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:59:57 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 15:44:02 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,16 @@ typedef struct s_data {
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			max_eat_count;
+	struct timeval	start_time;
 	pthread_mutex_t	*forks;
 }	t_data;
 
 typedef struct s_philo {
-	size_t	seat;
-	size_t	times_eaten;
-	t_data	*data;
+	size_t			seat;
+	size_t			times_eaten;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	t_data			*data;
 }	t_philo;
 
 typedef enum e_status {
@@ -61,5 +64,6 @@ void		destroy_philos(t_philo **philos);
 // utils
 void		*my_calloc(size_t nmemb, size_t size);
 int			my_usleep(useconds_t microseconds);
+useconds_t	get_timestamp(t_data *data);
 
 #endif
