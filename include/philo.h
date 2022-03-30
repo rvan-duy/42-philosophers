@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:09:11 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 14:40:20 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+#include <stdio.h>
 
 typedef struct s_data {
 	size_t			num_of_philo;
@@ -48,7 +49,11 @@ typedef enum e_arguments {
 t_status	start_threads(t_data *data, t_philo *philos);
 void		*routine(void *arg);
 
-// Utilities
+// init
+t_status	init_data(t_data *data, int argc, char **argv);
+t_status	init_philos(t_data *data, t_philo **philos);
+
+// utils
 void		*my_calloc(size_t nmemb, size_t size);
 int			my_usleep(useconds_t microseconds);
 

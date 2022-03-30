@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   init_philos.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:15:03 by rvan-duy      ########   odam.nl         */
+/*   Created: 2022/03/30 14:14:00 by rvan-duy      #+#    #+#                 */
+/*   Updated: 2022/03/30 14:14:34 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+static void	add_values(t_data *data, t_philo *philos)
 {
-	t_data	data;
-	t_philo	*philos;
+	size_t	i;
 
-	philos = NULL;
-	if (argc == 5 || argc == 6)
+	i = 0;
+	while (i < data->num_of_philo)
 	{
-		if (init_data(&data, argc, argv) == FAILURE)
-			return (EXIT_FAILURE);
-		if (init_philos(&data, &philos) == FAILURE)
-			return (EXIT_FAILURE);
-		start_threads(&data, philos);
+		philos[i].seat = i;
+		philos[i].times_eaten = 0;
+		philos[i].data = data;
+		i++;
 	}
-	return (EXIT_SUCCESS);
+}
+
+t_status	init_philos(t_data *data, t_philo **philos)
+{
+	*philos = my_calloc(data->num_of_philo, sizeof(t_philo));
+	if (*philos == NULL)
+		return (FAILURE);
+	add_values(data, *philos);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/03/30 11:35:27 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/03/30 14:15:21 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,9 @@ INCLUDE_FLAGS 	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 SOURCES 		:= 	src/main.c \
 					src/start_threads.c \
 					src/routine.c \
-					src/utils.c
+					src/utils.c \
+					src/init/init_data.c \
+					src/init/init_philos.c
 
 BOLD 			:= \e[1m
 RESET 			:= \e[0m
