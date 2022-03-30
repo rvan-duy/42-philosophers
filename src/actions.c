@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 16:50:50 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 18:35:22 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	go_eat(t_philo *philo_data)
 	hold_forks(philo_data);
 	protected_print("is eating", philo_data);
 	my_usleep(philo_data->data->time_to_eat * 1000);
+	philo_data->times_eaten++;
 	drop_forks(philo_data);
 }
 
