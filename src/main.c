@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/27 14:55:21 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 11:24:26 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,25 @@ static t_status	init_data(t_data *data, int argc, char **argv)
 	return (status);
 }
 
-static t_status	malloc_philos(size_t number_of_philosophers, t_philo **philos)
+static void	add_values(t_data *data, t_philo *philos)
 {
 	size_t	i;
 
-	philos = my_calloc(number_of_philosophers, sizeof(t_philo *));
-	if (philos == NULL)
-		return (FAILURE);
 	i = 0;
-	while (i < number_of_philosophers)
+	while (i < data->num_of_philo)
 	{
-		philos[i] = my_calloc(1, sizeof(t_philo));
-		if (philos[i] == NULL)
-		{
-			while (--i > 0)
-				free(philos[i]);
-			return (FAILURE);
-		}
+		philos[i].times_eaten = 0;
+		philos[i].data = data;
 		i++;
 	}
+}
+
+static t_status	init_philos(t_data *data, t_philo **philos)
+{
+	*philos = my_calloc(data->num_of_philo, sizeof(t_philo));
+	if (*philos == NULL)
+		return (FAILURE);
+	add_values(data, *philos);
 	return (SUCCESS);
 }
 
@@ -103,13 +103,14 @@ int	main(int argc, char **argv)
 	t_data	data;
 	t_philo	*philos;
 
+	philos = NULL;
 	if (argc == 5 || argc == 6)
 	{
 		if (init_data(&data, argc, argv) == FAILURE)
 			return (EXIT_FAILURE);
-		if (malloc_philos(data.num_of_philo, &philos) == FAILURE)
+		if (init_philos(&data, &philos) == FAILURE)
 			return (EXIT_FAILURE);
-		start_philos(&data, &philos);
+		start_threads(&data, philos);
 	}
 	return (EXIT_SUCCESS);
 }
