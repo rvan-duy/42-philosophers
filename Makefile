@@ -6,7 +6,7 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/03/30 14:15:21 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/03/30 14:59:32 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ SOURCES 		:= 	src/main.c \
 					src/routine.c \
 					src/utils.c \
 					src/init/init_data.c \
-					src/init/init_philos.c
+					src/init/init_philos.c \
+					src/actions.c
 
 BOLD 			:= \e[1m
 RESET 			:= \e[0m

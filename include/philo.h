@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:53:55 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 14:59:57 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ typedef enum e_arguments {
 }	t_arguments;
 
 t_status	start_threads(t_data *data, t_philo *philos);
+
+// routine
 void		*routine(void *arg);
+void		eat(t_philo *philo_data);
 
 // init & destroy
 t_status	init_data(t_data *data, int argc, char **argv);
