@@ -6,12 +6,13 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/27 14:30:42 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 13:19:44 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "philo.h"
 #include <string.h>
+#include <sys/time.h>
 
 void	*my_calloc(size_t nmemb, size_t size)
 {
@@ -24,4 +25,20 @@ void	*my_calloc(size_t nmemb, size_t size)
 		return (ptr);
 	memset(ptr, 0, nmemb * size);
 	return (ptr);
+}
+
+int	my_usleep(useconds_t microseconds)
+{
+	struct timeval	current_time;
+	struct timeval	target_time;
+
+	gettimeofday(&current_time, NULL);
+	target_time.tv_usec = current_time.tv_usec + microseconds;
+	while (current_time.tv_usec < target_time.tv_usec)
+	{
+		if (usleep(1) != SUCCESS)
+			return (FAILURE);
+		current_time.tv_usec++;
+	}
+	return (SUCCESS);
 }
