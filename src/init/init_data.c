@@ -6,12 +6,13 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:51:03 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 15:39:17 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
+#include <sys/time.h>
 
 static char	*get_argument(t_arguments arg)
 {
@@ -95,6 +96,7 @@ t_status	init_data(t_data *data, int argc, char **argv)
 		if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
 			status = FAILURE;
 	}
+	gettimeofday(&data->start_time, NULL);
 	return (status);
 }
 

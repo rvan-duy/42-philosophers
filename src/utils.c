@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 13:19:44 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 15:45:31 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,12 @@ int	my_usleep(useconds_t microseconds)
 		current_time.tv_usec++;
 	}
 	return (SUCCESS);
+}
+
+useconds_t	get_timestamp(t_data *data)
+{
+	struct timeval	current_time;
+
+	gettimeofday(&current_time, NULL);
+	return (current_time.tv_usec - data->start_time.tv_usec);
 }
