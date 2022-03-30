@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:46:10 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 14:51:03 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,17 @@ t_status	init_data(t_data *data, int argc, char **argv)
 			status = FAILURE;
 	}
 	return (status);
+}
+
+void	destroy_data(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < data->num_of_philo)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
+	free(data->forks);
 }

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:15:03 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 14:54:11 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	main(int argc, char **argv)
 		if (init_philos(&data, &philos) == FAILURE)
 			return (EXIT_FAILURE);
 		start_threads(&data, philos);
+		destroy_data(&data);
+		destroy_philos(&philos);
 	}
 	return (EXIT_SUCCESS);
 }
