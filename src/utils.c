@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/31 18:00:45 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/31 19:09:35 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,6 @@ void    stupid_sleep(unsigned long time2sleep)
 		usleep(100);
 }
 
-// int	my_usleep(useconds_t microseconds, t_philo *philo)
-// {
-// 	struct timeval	current_time;
-// 	struct timeval	target_time;
-
-// 	gettimeofday(&current_time, NULL);
-// 	target_time.tv_usec = current_time.tv_usec + microseconds;
-// 	while (current_time.tv_usec < target_time.tv_usec)
-// 	{
-// 		if (usleep(100) != SUCCESS)
-// 			return (FAILURE);
-// 		current_time.tv_usec++;
-// 		philo->time_since_last_meal++;
-// 	}
-// 	return (SUCCESS);
-// }
-
-// useconds_t	get_timestamp(t_data *data)
-// {
-// 	struct timeval	current_time;
-
-// 	gettimeofday(&current_time, NULL);
-// 	return (((current_time.tv_usec - data->start_time.tv_usec) / 1000) \
-// 				+ ((current_time.tv_sec - data->start_time.tv_sec) * 1000));
-// }
-
 void	protected_print(char *msg, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->print_lock);
@@ -98,12 +72,8 @@ void	protected_print(char *msg, t_philo *philo)
 
 bool	check_end_condition(t_philo *philo_data)
 {
-	// dprintf(STDERR_FILENO, "check_end_condition: %ld %ld %d\n", philo_data->times_eaten, philo_data->data->max_eat_count, philo_data->data->philo_died);
 	if (philo_data->times_eaten >= philo_data->data->max_eat_count
 		|| philo_data->data->philo_died == true)
-	{
-		// printf("true\n");
 		return (true);
-	}
 	return (false);
 }
