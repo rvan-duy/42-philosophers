@@ -6,7 +6,7 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/03/30 19:04:10 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/04/01 19:26:14 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ CFLAGS			+= -fsanitize=address -g3
 endif
 ifdef NO_FLAGS
 CFLAGS			:= 
+endif
+ifneq ($(shell uname), Darwin)
+CFLAGS			+= -pthread
 endif
 
 ################################################################################
