@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   routine.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/30 14:54:11 by rvan-duy      ########   odam.nl         */
+/*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
+/*   Updated: 2022/03/31 19:08:05 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+void	*routine(void *arg)
 {
-	t_data	data;
-	t_philo	*philos;
-
-	philos = NULL;
-	if (argc == 5 || argc == 6)
+	go_eat(arg);
+	while (true)
 	{
-		if (init_data(&data, argc, argv) == FAILURE)
-			return (EXIT_FAILURE);
-		if (init_philos(&data, &philos) == FAILURE)
-			return (EXIT_FAILURE);
-		start_threads(&data, philos);
-		destroy_data(&data);
-		destroy_philos(&philos);
+		if (check_end_condition(arg) == true)
+			return (NULL);
+		go_sleep(arg);
+		if (check_end_condition(arg) == true)
+			return (NULL);
+		go_think(arg);
+		if (check_end_condition(arg) == true)
+			return (NULL);
 	}
-	return (EXIT_SUCCESS);
+	return (NULL);
 }

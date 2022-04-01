@@ -6,13 +6,13 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/03/25 16:48:11 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/04/01 19:26:14 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			:= philo
 CC				:= gcc
-CFLAGS			:= -Wall -Wextra -Werror
+CFLAGS			:= -Wall -Wextra -Werror -g
 
 ################################################################################
 
@@ -25,13 +25,22 @@ endif
 ifdef NO_FLAGS
 CFLAGS			:= 
 endif
+ifneq ($(shell uname), Darwin)
+CFLAGS			+= -pthread
+endif
 
 ################################################################################
 
 HEADERS 		:= include/philo.h
 INCLUDE_FLAGS 	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
-SOURCES 		:= src/main.c
+SOURCES 		:= 	src/main.c \
+					src/start_threads.c \
+					src/routine.c \
+					src/utils.c \
+					src/init/init_data.c \
+					src/init/init_philos.c \
+					src/actions.c
 
 BOLD 			:= \e[1m
 RESET 			:= \e[0m
