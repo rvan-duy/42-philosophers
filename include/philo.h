@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 17:25:38 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 18:02:52 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ t_status	start_threads(t_data *data, t_philo *philos);
 
 // routine
 void		*routine(void *arg);
-void		go_eat(t_philo *philo_data);
-void		go_sleep(t_philo *philo_data);
-void		go_think(t_philo *philo_data);
+void		go_eat(t_philo *p);
+void		go_sleep(t_philo *p);
+void		go_think(t_philo *p);
 
 // init & destroy
 t_status	init_data(t_data *data, int argc, char **argv);

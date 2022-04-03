@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 17:41:20 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 18:01:46 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	protected_print(char *msg, t_philo *p)
 bool	check_end_condition(t_philo *p)
 {
 	pthread_mutex_lock(&p->data->extra_lock);
-	if (p->data->a_philo_died == true)
+	if (p->data->a_philo_died == true
+		|| p->times_eaten == p->data->max_eat_count)
 	{
 		pthread_mutex_unlock(&p->data->extra_lock);
 		return (true);
