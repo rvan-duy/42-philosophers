@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:14:00 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 15:06:49 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/03/30 18:50:30 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,11 @@ static void	add_values(t_data *data, t_philo *philos)
 		philos[i].seat = i;
 		philos[i].times_eaten = 0;
 		philos[i].time_since_last_meal = 0;
-		philos[i].timestamp_last_meal = get_timestamp(data->start_time);
 		philos[i].data = data;
 		philos[i].left_fork = &data->forks[i];
 		philos[i].right_fork = &data->forks[(i + 1) % data->num_of_philo];
 		i++;
 	}
-	if (philos[i].left_fork == philos[i].right_fork)
-		philos[i].right_fork = NULL;
 }
 
 t_status	init_philos(t_data *data, t_philo **philos)
