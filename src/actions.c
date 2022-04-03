@@ -6,80 +6,88 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 13:15:57 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 18:02:48 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	hold_forks(t_philo *philo_data)
+static void	grab_fork(pthread_mutex_t *fork, t_philo *p)
 {
-	if (philo_data->seat % 2 == 0)
+	if (fork != NULL)
 	{
-		if (check_end_condition(philo_data) == false)
+		pthread_mutex_lock(fork);
+		protected_print("has taken a fork", p);
+	}
+	else
+	{
+		stupid_sleep(p->data->time_to_die);
+	}
+}
+
+static void	hold_forks(t_philo *p)
+{
+	if (p->seat % 2 == 0)
+	{
+		if (check_end_condition(p) == false)
 		{
-			pthread_mutex_lock(philo_data->left_fork);
-			protected_print("has taken a fork", philo_data);
-			if (check_end_condition(philo_data) == false)
-			{
-				pthread_mutex_lock(philo_data->right_fork);
-				protected_print("has taken a fork", philo_data);
-			}
+			grab_fork(p->left_fork, p);
+			if (check_end_condition(p) == false)
+				grab_fork(p->right_fork, p);
 			else
-				pthread_mutex_unlock(philo_data->left_fork);
+				pthread_mutex_unlock(p->left_fork);
 		}
 	}
 	else
 	{
-		if (check_end_condition(philo_data) == false)
+		if (check_end_condition(p) == false)
 		{
-			pthread_mutex_lock(philo_data->right_fork);
-			protected_print("has taken a fork", philo_data);
-			if (check_end_condition(philo_data) == false)
-			{
-				pthread_mutex_lock(philo_data->left_fork);
-				protected_print("has taken a fork", philo_data);
-			}
+			grab_fork(p->right_fork, p);
+			if (check_end_condition(p) == false)
+				grab_fork(p->left_fork, p);
 			else
-				pthread_mutex_unlock(philo_data->right_fork);
+				pthread_mutex_unlock(p->right_fork);
 		}
 	}
 }
 
-static void	drop_forks(t_philo *philo_data)
+static void	drop_forks(t_philo *p)
 {
-	pthread_mutex_unlock(philo_data->left_fork);
-	pthread_mutex_unlock(philo_data->right_fork);
+	if (p->left_fork != NULL)
+		pthread_mutex_unlock(p->left_fork);
+	if (p->right_fork != NULL)
+		pthread_mutex_unlock(p->right_fork);
 }
 
-void	go_eat(t_philo *philo_data)
+void	go_eat(t_philo *p)
 {
-	hold_forks(philo_data);
-	if (check_end_condition(philo_data) == true)
+	hold_forks(p);
+	if (check_end_condition(p) == true)
 	{
-		drop_forks(philo_data);
+		drop_forks(p);
 		return ;
 	}
-	protected_print("is eating", philo_data);
-	stupid_sleep(philo_data->data->time_to_eat);
-	pthread_mutex_lock(&philo_data->data->extra_lock);
-	philo_data->time_since_last_meal = 0;
-	philo_data->times_eaten++;
-	pthread_mutex_unlock(&philo_data->data->extra_lock);
-	drop_forks(philo_data);
+	protected_print("is eating", p);
+	stupid_sleep(p->data->time_to_eat);
+	pthread_mutex_lock(&p->data->extra_lock);
+	p->time_since_last_meal = 0;
+	p->timestamp_last_meal = get_timestamp(p->data->start_time);
+	p->times_eaten++;
+	pthread_mutex_unlock(&p->data->extra_lock);
+	drop_forks(p);
 }
 
-void	go_sleep(t_philo *philo_data)
+void	go_sleep(t_philo *p)
 {
-	protected_print("is sleeping", philo_data);
-	pthread_mutex_lock(&philo_data->data->extra_lock);
-	philo_data->time_since_last_meal += philo_data->data->time_to_sleep;
-	pthread_mutex_unlock(&philo_data->data->extra_lock);
-	stupid_sleep(philo_data->data->time_to_sleep);
+	protected_print("is sleeping", p);
+	pthread_mutex_lock(&p->data->extra_lock);
+	p->time_since_last_meal += p->data->time_to_sleep;
+	pthread_mutex_unlock(&p->data->extra_lock);
+	stupid_sleep(p->data->time_to_sleep);
 }
 
-void	go_think(t_philo *philo_data)
+void	go_think(t_philo *p)
 {
-	protected_print("is thinking", philo_data);
-	go_eat(philo_data);
+	protected_print("is thinking", p);
+	go_eat(p);
 }
