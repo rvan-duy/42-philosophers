@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/31 17:21:16 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 12:48:25 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void		destroy_philos(t_philo **philos);
 
 // utils
 void		stupid_sleep(unsigned long time2sleep);
-long long	get_time_in_ms(void);
 long long	get_timestamp(long long start_timestamp);
 void		*my_calloc(size_t nmemb, size_t size);
 void		protected_print(char *msg, t_philo *philo);
