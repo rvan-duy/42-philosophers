@@ -6,13 +6,14 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/03 12:46:51 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 12:48:48 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 12:51:22 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
+#include <unistd.h>
 
-static long long	get_time_in_ms(void)
+long long	get_time_in_ms(void)
 {
 	struct timeval	time;
 

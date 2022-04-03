@@ -6,13 +6,12 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 12:48:39 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 12:51:02 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <string.h>
-#include <sys/time.h>
 
 void	*my_calloc(size_t nmemb, size_t size)
 {
