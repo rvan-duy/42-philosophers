@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 12:59:52 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 13:49:53 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,11 @@ t_status	init_data(t_data *data, int argc, char **argv)
 	status = SUCCESS;
 	if (philo_atoi(&data->num_of_philo, argv[1], NUM_OF_PHILO) == FAILURE)
 		status = FAILURE;
+	if (data->num_of_philo > 200)
+	{
+		status = FAILURE;
+		printf("number_of_philosophers cannot be more than 200\n");
+	}
 	if (philo_atoi(&data->time_to_die, argv[2], TIME_TO_DIE) == FAILURE)
 		status = FAILURE;
 	if (philo_atoi(&data->time_to_eat, argv[3], TIME_TO_EAT) == FAILURE)
@@ -95,10 +100,10 @@ t_status	init_data(t_data *data, int argc, char **argv)
 	{
 		if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
 			status = FAILURE;
+		pthread_mutex_init(&data->print_lock, NULL);
+		pthread_mutex_init(&data->extra_lock, NULL);
+		data->philo_died = false;
 	}
-	pthread_mutex_init(&data->print_lock, NULL);
-	pthread_mutex_init(&data->extra_lock, NULL);
-	data->philo_died = false;
 	return (status);
 }
 
