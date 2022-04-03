@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/26 16:44:32 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/31 18:48:20 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 12:49:07 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ static t_status	wait_for_threads(size_t num, pthread_t *threads)
 	return (SUCCESS);
 }
 
-static bool everyone_is_full(size_t num, t_philo *philos)
+static bool	everyone_is_full(size_t num, t_philo *philos)
 {
-	size_t i;
-	size_t sum;
+	size_t	i;
+	size_t	sum;
 
 	i = 0;
 	sum = 0;
