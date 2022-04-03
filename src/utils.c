@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/31 19:09:35 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 12:45:13 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static unsigned long	get_time_us(void)
 	return (out);
 }
 
-void    stupid_sleep(unsigned long time2sleep)
+void	stupid_sleep(unsigned long time2sleep)
 {
 	unsigned long	start;
 
