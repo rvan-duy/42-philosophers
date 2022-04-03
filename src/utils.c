@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 13:10:50 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 15:22:32 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	protected_print(char *msg, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->print_lock);
 	if (check_end_condition(philo) == false)
-		printf("%lld %zu %s\n", get_timestamp(philo->data->start_time), philo->seat, msg);
+		printf("%zu %zu %s\n", get_timestamp(philo->data->start_time), philo->seat, msg);
 	pthread_mutex_unlock(&philo->data->print_lock);
 }
 
@@ -46,4 +46,13 @@ bool	check_end_condition(t_philo *philo_data)
 		ret = false;
 	pthread_mutex_unlock(&philo_data->data->extra_lock);
 	return (ret);
+}
+
+void	update_time_since_last_meal(t_philo *philo)
+{
+	const size_t	current_timestamp = get_timestamp(philo->data->start_time);
+
+	pthread_mutex_lock(&philo->data->extra_lock);
+	philo->time_since_last_meal = philo->data->start_time - current_timestamp;
+	pthread_mutex_unlock(&philo->data->extra_lock);
 }
