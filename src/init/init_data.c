@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/31 17:21:34 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 13:54:11 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 	return (SUCCESS);
 }
 
-// TODO: handle mutex creation failure better
 t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 {
 	size_t	i;
@@ -80,6 +79,11 @@ t_status	init_data(t_data *data, int argc, char **argv)
 	status = SUCCESS;
 	if (philo_atoi(&data->num_of_philo, argv[1], NUM_OF_PHILO) == FAILURE)
 		status = FAILURE;
+	if (data->num_of_philo > 200)
+	{
+		status = FAILURE;
+		printf("number_of_philosophers cannot be more than 200\n");
+	}
 	if (philo_atoi(&data->time_to_die, argv[2], TIME_TO_DIE) == FAILURE)
 		status = FAILURE;
 	if (philo_atoi(&data->time_to_eat, argv[3], TIME_TO_EAT) == FAILURE)
@@ -95,9 +99,10 @@ t_status	init_data(t_data *data, int argc, char **argv)
 	{
 		if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
 			status = FAILURE;
+		pthread_mutex_init(&data->print_lock, NULL);
+		pthread_mutex_init(&data->extra_lock, NULL);
+		data->philo_died = false;
 	}
-	pthread_mutex_init(&data->print_lock, NULL);
-	data->philo_died = false;
 	return (status);
 }
 
@@ -112,5 +117,6 @@ void	destroy_data(t_data *data)
 		i++;
 	}
 	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_destroy(&data->extra_lock);
 	free(data->forks);
 }
