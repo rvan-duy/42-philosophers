@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 13:49:53 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 13:54:11 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 	return (SUCCESS);
 }
 
-// TODO: handle mutex creation failure better
 t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 {
 	size_t	i;
