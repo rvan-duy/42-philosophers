@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/26 16:44:32 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 13:14:19 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 17:17:55 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ static bool	everyone_is_full(size_t num, t_philo *philos)
 	sum = 0;
 	while (i < num)
 	{
+		pthread_mutex_lock(&philos[i].data->extra_lock);
 		sum += philos[i].times_eaten;
+		pthread_mutex_unlock(&philos[i].data->extra_lock);
 		i++;
 	}
 	return (sum == (philos[--i].data->max_eat_count * num));
@@ -65,16 +67,16 @@ static void	check_for_deads(size_t num, t_philo *philos)
 		i = 0;
 		while (i < num)
 		{
-			pthread_mutex_lock(&philos->data->extra_lock);
-			if (philos[i].time_since_last_meal > philos[i].data->time_to_die)
+			pthread_mutex_lock(&philos[i].data->extra_lock);
+			if (philos[i].is_alive == false)
 			{
-				protected_print("died", philos);
-				philos[i].data->philo_died = true;
+				philos[i].data->a_philo_died = true;
+				pthread_mutex_unlock(&philos[i].data->extra_lock);
 				return ;
 			}
+			pthread_mutex_unlock(&philos[i].data->extra_lock);
 			if (everyone_is_full(num, philos) == true)
 				return ;
-			pthread_mutex_unlock(&philos->data->extra_lock);
 			i++;
 		}
 	}
@@ -91,7 +93,6 @@ t_status	start_threads(t_data *data, t_philo *philos)
 	if (create_threads(data->num_of_philo, threads, philos) == FAILURE)
 		return (FAILURE);
 	check_for_deads(data->num_of_philo, philos);
-	pthread_mutex_unlock(&philos->data->extra_lock);
 	if (wait_for_threads(data->num_of_philo, threads) == FAILURE)
 		return (FAILURE);
 	free(threads);

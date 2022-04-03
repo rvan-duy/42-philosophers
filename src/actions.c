@@ -6,18 +6,22 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 17:16:45 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 17:42:21 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	grab_fork(pthread_mutex_t *fork, t_philo *philo_data)
+static void	grab_fork(pthread_mutex_t *fork, t_philo *p)
 {
 	if (fork != NULL)
 	{
 		pthread_mutex_lock(fork);
-		protected_print("has taken a fork", philo_data);
+		protected_print("has taken a fork", p);
+	}
+	else
+	{
+		stupid_sleep(p->data->time_to_die);
 	}
 }
 
@@ -49,8 +53,10 @@ static void	hold_forks(t_philo *philo_data)
 
 static void	drop_forks(t_philo *philo_data)
 {
-	pthread_mutex_unlock(philo_data->left_fork);
-	pthread_mutex_unlock(philo_data->right_fork);
+	if (philo_data->left_fork != NULL)
+		pthread_mutex_unlock(philo_data->left_fork);
+	if (philo_data->right_fork != NULL)
+		pthread_mutex_unlock(philo_data->right_fork);
 }
 
 void	go_eat(t_philo *philo_data)

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 13:10:50 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 17:41:20 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,35 @@ void	*my_calloc(size_t nmemb, size_t size)
 	return (ptr);
 }
 
-void	protected_print(char *msg, t_philo *philo)
+void	protected_print(char *msg, t_philo *p)
 {
-	pthread_mutex_lock(&philo->data->print_lock);
-	if (check_end_condition(philo) == false)
-		printf("%lld %zu %s\n", get_timestamp(philo->data->start_time), philo->seat, msg);
-	pthread_mutex_unlock(&philo->data->print_lock);
+	if (check_end_condition(p) == false)
+	{
+		pthread_mutex_lock(&p->data->print_lock);
+		printf("%zu %zu %s\n", get_timestamp(p->data->start_time), p->seat, msg);
+		pthread_mutex_unlock(&p->data->print_lock);
+	}
 }
 
-bool	check_end_condition(t_philo *philo_data)
+bool	check_end_condition(t_philo *p)
 {
-	bool	ret;
-
-	pthread_mutex_lock(&philo_data->data->extra_lock);
-	if (philo_data->times_eaten >= philo_data->data->max_eat_count
-		|| philo_data->data->philo_died == true)
-		ret = true;
-	else
-		ret = false;
-	pthread_mutex_unlock(&philo_data->data->extra_lock);
-	return (ret);
+	pthread_mutex_lock(&p->data->extra_lock);
+	if (p->data->a_philo_died == true)
+	{
+		pthread_mutex_unlock(&p->data->extra_lock);
+		return (true);
+	}
+	pthread_mutex_unlock(&p->data->extra_lock);
+	update_time_since_last_meal(p);
+	if (p->time_since_last_meal >= p->data->time_to_die)
+	{
+		pthread_mutex_lock(&p->data->extra_lock);
+		p->is_alive = false;
+		pthread_mutex_unlock(&p->data->extra_lock);
+		pthread_mutex_lock(&p->data->print_lock);
+		printf("%zu %zu died\n", get_timestamp(p->data->start_time), p->seat);
+		pthread_mutex_unlock(&p->data->print_lock);
+		return (true);
+	}
+	return (false);
 }

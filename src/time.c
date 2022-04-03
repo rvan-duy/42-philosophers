@@ -6,14 +6,14 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/03 12:46:51 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 12:51:22 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 16:28:34 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo.h"
 #include <sys/time.h>
-#include <unistd.h>
 
-long long	get_time_in_ms(void)
+size_t	get_time_in_ms(void)
 {
 	struct timeval	time;
 
@@ -21,15 +21,15 @@ long long	get_time_in_ms(void)
 	return (time.tv_sec * 1000LL + time.tv_usec / 1000);
 }
 
-long long	get_timestamp(long long start_timestamp)
+size_t	get_timestamp(size_t start_timestamp)
 {
 	return (get_time_in_ms() - start_timestamp);
 }
 
-static unsigned long	get_time_us(void)
+static size_t	get_time_us(void)
 {
 	static struct timeval	tv;
-	unsigned long			out;
+	size_t					out;
 
 	gettimeofday(&tv, NULL);
 	out = tv.tv_sec;
@@ -38,12 +38,19 @@ static unsigned long	get_time_us(void)
 	return (out);
 }
 
-void	stupid_sleep(unsigned long time2sleep)
+void	stupid_sleep(size_t time2sleep)
 {
-	unsigned long	start;
+	size_t	start;
 
 	start = get_time_us();
 	time2sleep *= 1000;
 	while (get_time_us() - start < time2sleep)
 		usleep(100);
+}
+
+void	update_time_since_last_meal(t_philo *philo)
+{
+	const size_t	diff = get_timestamp(philo->timestamp_last_meal);
+
+	philo->time_since_last_meal = diff - philo->data->start_time;
 }

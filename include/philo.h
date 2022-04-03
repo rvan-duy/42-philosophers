@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 12:59:07 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 17:25:38 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,19 @@ typedef struct s_data {
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			max_eat_count;
-	long long		start_time;
+	size_t			start_time;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	extra_lock;
-	bool			philo_died;
+	bool			a_philo_died;
 }	t_data;
 
 typedef struct s_philo {
 	size_t			seat;
+	bool			is_alive;
 	size_t			times_eaten;
-	useconds_t		time_since_last_meal;
+	size_t			time_since_last_meal;
+	size_t			timestamp_last_meal;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
@@ -70,12 +72,13 @@ void		destroy_philos(t_philo **philos);
 
 // utils
 void		*my_calloc(size_t nmemb, size_t size);
-void		protected_print(char *msg, t_philo *philo);
-bool		check_end_condition(t_philo *philo_data);
+void		protected_print(char *msg, t_philo *p);
+bool		check_end_condition(t_philo *p);
 
 // time
-long long	get_time_in_ms(void);
-long long	get_timestamp(long long start_timestamp);
-void		stupid_sleep(unsigned long time2sleep);
+size_t		get_time_in_ms(void);
+size_t		get_timestamp(size_t start_timestamp);
+void		stupid_sleep(size_t time2sleep);
+void		update_time_since_last_meal(t_philo *philo);
 
 #endif
