@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 12:53:46 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 12:59:07 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_data {
 	long long		start_time;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	extra_lock;
 	bool			philo_died;
 }	t_data;
 

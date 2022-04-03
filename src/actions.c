@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/03/31 18:48:35 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/03 13:15:57 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,19 @@ void	go_eat(t_philo *philo_data)
 	}
 	protected_print("is eating", philo_data);
 	stupid_sleep(philo_data->data->time_to_eat);
+	pthread_mutex_lock(&philo_data->data->extra_lock);
 	philo_data->time_since_last_meal = 0;
 	philo_data->times_eaten++;
+	pthread_mutex_unlock(&philo_data->data->extra_lock);
 	drop_forks(philo_data);
 }
 
 void	go_sleep(t_philo *philo_data)
 {
 	protected_print("is sleeping", philo_data);
+	pthread_mutex_lock(&philo_data->data->extra_lock);
 	philo_data->time_since_last_meal += philo_data->data->time_to_sleep;
+	pthread_mutex_unlock(&philo_data->data->extra_lock);
 	stupid_sleep(philo_data->data->time_to_sleep);
 }
 
