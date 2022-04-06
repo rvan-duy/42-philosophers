@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/06 20:46:25 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/06 21:11:03 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@ static void	*maintainer_thread(void *arg)
 	p = arg;
 	while (true)
 	{
+		// probably need locks to avoid data from getting fucky
 		current_timestamp = get_timestamp(p->data->start_time);
-		printf("current_timestamp: %zu last_meal: %zu p->data->time_to_die: %zu\n", current_timestamp, p->last_meal, p->data->time_to_die);
 		if (current_timestamp - p->last_meal > p->data->time_to_die &&
 			p->state != EAT)
 		{
+			printf("current_timestamp: %zu last_meal: %zu p->data->time_to_die: %zu\n", current_timestamp, p->last_meal, p->data->time_to_die);
 			printf("%zu died\n", p->seat);
 			p->is_alive = false;
 			return (NULL);

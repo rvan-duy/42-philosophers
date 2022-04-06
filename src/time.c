@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/03 12:46:51 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/06 20:00:38 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/06 21:09:35 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ size_t	get_time_in_ms(void)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
+	printf("gettimeofday: %ld %d\n", time.tv_sec, time.tv_usec);
 	return (time.tv_sec * 1000LL + time.tv_usec / 1000);
 }
 
 t_timestamp	get_timestamp(t_timestamp start_timestamp)
 {
+	printf("bla: %zu\n", get_time_in_ms() - start_timestamp);
 	return (get_time_in_ms() - start_timestamp);
 }
 

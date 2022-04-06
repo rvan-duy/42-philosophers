@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/26 16:44:32 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/06 20:31:08 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/06 20:54:32 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_status	create_threads(size_t num, pthread_t *threads, t_philo *philos)
 	{
 		if (pthread_create(&threads[i], NULL, &routine, &philos[i]) != SUCCESS)
 			return (FAILURE);
-		usleep(1000);
+		usleep(100);
 		i++;
 	}
 	return (SUCCESS);
