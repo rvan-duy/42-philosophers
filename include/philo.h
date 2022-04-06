@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 18:02:52 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/06 20:42:20 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 # include <stdbool.h>
 #include <stdio.h>
 
+typedef size_t t_timestamp;
+
+typedef enum e_state {
+	EAT,
+	SLEEP,
+	THINK
+}	t_state;
+
 typedef struct s_data {
 	size_t			num_of_philo;
 	size_t			time_to_die;
@@ -29,15 +37,15 @@ typedef struct s_data {
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	extra_lock;
-	bool			a_philo_died;
+	bool			end_reached;
 }	t_data;
 
 typedef struct s_philo {
 	size_t			seat;
 	bool			is_alive;
 	size_t			times_eaten;
-	size_t			time_since_last_meal;
-	size_t			timestamp_last_meal;
+	t_timestamp		last_meal;
+	t_state			state;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
@@ -73,12 +81,13 @@ void		destroy_philos(t_philo **philos);
 // utils
 void		*my_calloc(size_t nmemb, size_t size);
 void		protected_print(char *msg, t_philo *p);
-bool		check_end_condition(t_philo *p);
+bool		check_if_alive(t_philo *p);
+bool		check_if_ate_enough(t_philo *p);
 
 // time
 size_t		get_time_in_ms(void);
-size_t		get_timestamp(size_t start_timestamp);
+t_timestamp	get_timestamp(t_timestamp start_timestamp);
 void		stupid_sleep(size_t time2sleep);
-void		update_time_since_last_meal(t_philo *philo);
+// void		update_time_since_last_meal(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 18:01:46 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/06 20:44:47 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	*my_calloc(size_t nmemb, size_t size)
 
 void	protected_print(char *msg, t_philo *p)
 {
-	if (check_end_condition(p) == false)
+	if (check_if_alive(p) == false)
 	{
 		pthread_mutex_lock(&p->data->print_lock);
 		printf("%zu %zu %s\n", get_timestamp(p->data->start_time), p->seat, msg);
@@ -36,26 +36,26 @@ void	protected_print(char *msg, t_philo *p)
 	}
 }
 
-bool	check_end_condition(t_philo *p)
+bool	check_if_alive(t_philo *p)
 {
 	pthread_mutex_lock(&p->data->extra_lock);
-	if (p->data->a_philo_died == true
-		|| p->times_eaten == p->data->max_eat_count)
+	if (p->is_alive == true)
 	{
 		pthread_mutex_unlock(&p->data->extra_lock);
 		return (true);
 	}
 	pthread_mutex_unlock(&p->data->extra_lock);
-	update_time_since_last_meal(p);
-	if (p->time_since_last_meal >= p->data->time_to_die)
+	return (false);
+}
+
+bool	check_if_ate_enough(t_philo *p)
+{
+	pthread_mutex_lock(&p->data->extra_lock);
+	if (p->times_eaten >= p->data->max_eat_count)
 	{
-		pthread_mutex_lock(&p->data->extra_lock);
-		p->is_alive = false;
 		pthread_mutex_unlock(&p->data->extra_lock);
-		pthread_mutex_lock(&p->data->print_lock);
-		printf("%zu %zu died\n", get_timestamp(p->data->start_time), p->seat);
-		pthread_mutex_unlock(&p->data->print_lock);
 		return (true);
 	}
+	pthread_mutex_unlock(&p->data->extra_lock);
 	return (false);
 }
