@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/06 21:11:03 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/08 19:54:58 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,26 @@ static void	*maintainer_thread(void *arg)
 	p = arg;
 	while (true)
 	{
-		// probably need locks to avoid data from getting fucky
 		current_timestamp = get_timestamp(p->data->start_time);
-		if (current_timestamp - p->last_meal > p->data->time_to_die &&
-			p->state != EAT)
+		pthread_mutex_lock(&p->data->extra_lock);
+		if (current_timestamp - p->last_meal >= p->data->time_to_die
+			&& p->state != EAT)
 		{
-			printf("current_timestamp: %zu last_meal: %zu p->data->time_to_die: %zu\n", current_timestamp, p->last_meal, p->data->time_to_die);
-			printf("%zu died\n", p->seat);
+			if (p->data->end_reached == false)
+				printf("%zu %zu died\n", current_timestamp, p->seat);
 			p->is_alive = false;
+			p->data->end_reached = true;
+			pthread_mutex_unlock(&p->data->extra_lock);
 			return (NULL);
 		}
+		pthread_mutex_unlock(&p->data->extra_lock);
+		pthread_mutex_lock(&p->data->extra_lock);
+		if (p->is_alive == false)
+		{
+			pthread_mutex_unlock(&p->data->extra_lock);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&p->data->extra_lock);
 	}
 	return (NULL);
 }
@@ -49,16 +59,17 @@ void	*routine(void *arg)
 	go_eat(arg);
 	while (true)
 	{
-		if (check_if_alive(arg) == true)
-			return (NULL);
+		if (check_if_alive(arg) == false)
+			break ;
 		go_sleep(arg);
-		if (check_if_alive(arg) == true)
-			return (NULL);
+		if (check_if_alive(arg) == false)
+			break ;
 		go_think(arg);
 		if (check_if_ate_enough(arg) == true)
-			return (NULL);
-		if (check_if_alive(arg) == true)
-			return (NULL);
+			break ;
+		if (check_if_alive(arg) == false)
+			break ;
 	}
+	pthread_join(maintainer, NULL);
 	return (NULL);
 }
