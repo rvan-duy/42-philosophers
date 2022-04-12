@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/08 19:54:45 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/12 16:55:20 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	*my_calloc(size_t nmemb, size_t size)
 
 void	protected_print(char *msg, t_philo *p)
 {
-	if (check_if_alive(p) == true)
+	if (check_end(p) == false)
 	{
 		pthread_mutex_lock(&p->data->extra_lock);
 		if (p->data->end_reached == true)
@@ -43,10 +43,10 @@ void	protected_print(char *msg, t_philo *p)
 	}
 }
 
-bool	check_if_alive(t_philo *p)
+bool	check_end(t_philo *p)
 {
 	pthread_mutex_lock(&p->data->extra_lock);
-	if (p->is_alive == true)
+	if (p->data->end_reached == true)
 	{
 		pthread_mutex_unlock(&p->data->extra_lock);
 		return (true);

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/08 19:42:13 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/12 16:54:15 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,15 @@ static void	grab_fork(pthread_mutex_t *fork, t_philo *p)
 
 static void	hold_forks(t_philo *p)
 {
-	if (p->seat % 2 == 0)
+	if (check_end(p) == false)
 	{
-		if (check_if_alive(p) == true)
-		{
-			grab_fork(p->left_fork, p);
-			if (check_if_alive(p) == true)
-				grab_fork(p->right_fork, p);
-			else
-				pthread_mutex_unlock(p->left_fork);
-		}
-	}
-	else
-	{
-		if (check_if_alive(p) == true)
-		{
+		grab_fork(p->left_fork, p);
+		if (check_end(p) == false)
 			grab_fork(p->right_fork, p);
-			if (check_if_alive(p) == true)
-				grab_fork(p->left_fork, p);
-			else
-				pthread_mutex_unlock(p->right_fork);
+		else
+		{
+			pthread_mutex_unlock(p->left_fork);
+			pthread_mutex_unlock(p->right_fork);
 		}
 	}
 }
@@ -62,7 +51,7 @@ static void	drop_forks(t_philo *p)
 void	go_eat(t_philo *p)
 {
 	hold_forks(p);
-	if (check_if_alive(p) == false)
+	if (check_end(p) == true)
 	{
 		drop_forks(p);
 		return ;
@@ -74,16 +63,15 @@ void	go_eat(t_philo *p)
 	pthread_mutex_unlock(&p->data->extra_lock);
 	stupid_sleep(p->data->time_to_eat);
 	
-	pthread_mutex_lock(&p->data->extra_lock);
-	p->last_meal = get_timestamp(p->data->start_time);
-	pthread_mutex_unlock(&p->data->extra_lock);
+
+	drop_forks(p);
 
 	// stuff
 	pthread_mutex_lock(&p->data->extra_lock);
 	p->last_meal = get_timestamp(p->data->start_time);
 	p->times_eaten++;
 	pthread_mutex_unlock(&p->data->extra_lock);
-	drop_forks(p);
+
 }
 
 void	go_sleep(t_philo *p)

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/06 20:42:20 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/12 14:08:24 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void		destroy_philos(t_philo **philos);
 // utils
 void		*my_calloc(size_t nmemb, size_t size);
 void		protected_print(char *msg, t_philo *p);
-bool		check_if_alive(t_philo *p);
+bool		check_end(t_philo *p);
 bool		check_if_ate_enough(t_philo *p);
 
 // time

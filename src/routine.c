@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/08 19:54:58 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/12 16:48:27 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 // each thread needs separate thread to check for dead / enough_eaten
 // then you dont have to check every single time?
 
-// infinite loop:
-// updates times
-// if times exceed something then we die
+// [1-200] 800 200 200
+// 
 
 static void	*maintainer_thread(void *arg)
 {
@@ -27,13 +26,20 @@ static void	*maintainer_thread(void *arg)
 	p = arg;
 	while (true)
 	{
-		current_timestamp = get_timestamp(p->data->start_time);
+		if (p->data->end_reached == true)
+			return (NULL);
 		pthread_mutex_lock(&p->data->extra_lock);
+		current_timestamp = get_timestamp(p->data->start_time);
 		if (current_timestamp - p->last_meal >= p->data->time_to_die
 			&& p->state != EAT)
 		{
 			if (p->data->end_reached == false)
+			{
+				current_timestamp = get_timestamp(p->data->start_time);
+				pthread_mutex_lock(&p->data->print_lock);
 				printf("%zu %zu died\n", current_timestamp, p->seat);
+				pthread_mutex_unlock(&p->data->print_lock);
+			}
 			p->is_alive = false;
 			p->data->end_reached = true;
 			pthread_mutex_unlock(&p->data->extra_lock);
@@ -59,17 +65,18 @@ void	*routine(void *arg)
 	go_eat(arg);
 	while (true)
 	{
-		if (check_if_alive(arg) == false)
+		if (check_end(arg) == true)
 			break ;
 		go_sleep(arg);
-		if (check_if_alive(arg) == false)
+		if (check_end(arg) == true)
 			break ;
 		go_think(arg);
 		if (check_if_ate_enough(arg) == true)
 			break ;
-		if (check_if_alive(arg) == false)
+		if (check_end(arg) == true)
 			break ;
 	}
 	pthread_join(maintainer, NULL);
 	return (NULL);
 }
+
