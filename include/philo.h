@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/12 14:08:24 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/13 11:14:41 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <stdbool.h>
-#include <stdio.h>
 
-typedef size_t t_timestamp;
+typedef size_t	t_timestamp;
 
 typedef enum e_state {
 	EAT,
 	SLEEP,
-	THINK
+	THINK,
 }	t_state;
 
 typedef struct s_data {
@@ -42,7 +41,7 @@ typedef struct s_data {
 
 typedef struct s_philo {
 	size_t			seat;
-	bool			is_alive;
+	bool			ate_enough;
 	size_t			times_eaten;
 	t_timestamp		last_meal;
 	t_state			state;
