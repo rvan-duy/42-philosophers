@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/15 14:50:19 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 14:50:47 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 18:47:36 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void	grab_fork(pthread_mutex_t *fork, t_philo *p)
 
 static void	hold_forks(t_philo *p)
 {
-	if (p->data->end_reached == false)
+	if (check_end(p) == false)
 	{
 		grab_fork(p->left_fork, p);
-		if (p->data->end_reached == false)
+		if (check_end(p) == false)
 			grab_fork(p->right_fork, p);
 		else
 		{
@@ -50,19 +50,19 @@ static void	drop_forks(t_philo *p)
 void	go_eat(t_philo *p)
 {
 	hold_forks(p);
-	if (p->data->end_reached == true)
+	if (check_end(p) == true)
 	{
 		drop_forks(p);
 		return ;
 	}
 	protected_print("is eating", p);
 	pthread_mutex_lock(&p->data->extra_lock);
+	p->last_meal = get_timestamp(p->data->start_time);
 	p->state = EAT;
 	pthread_mutex_unlock(&p->data->extra_lock);
 	stupid_sleep(p->data->time_to_eat);
 	drop_forks(p);
 	pthread_mutex_lock(&p->data->extra_lock);
-	p->last_meal = get_timestamp(p->data->start_time);
 	p->times_eaten++;
 	p->state = NOT_EAT;
 	pthread_mutex_unlock(&p->data->extra_lock);

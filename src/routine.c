@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 14:13:03 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 18:46:04 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,23 @@ static void	*maintainer_thread(void *arg)
 	p = arg;
 	while (true)
 	{
+		pthread_mutex_lock(&p->data->extra_lock);
 		if (p->data->end_reached == true
 			|| p->times_eaten >= p->data->max_eat_count)
-			return (NULL);
-		pthread_mutex_lock(&p->data->extra_lock);
+			break ;
 		if (philo_should_die(&current_timestamp, arg) == true)
 		{
 			if (p->data->end_reached == false)
 			{
-				p->data->end_reached = true;
 				pthread_mutex_lock(&p->data->print_lock);
+				p->data->end_reached = true;
 				printf("%zu %zu died\n", current_timestamp, p->seat);
 				pthread_mutex_unlock(&p->data->print_lock);
 			}
 		}
 		pthread_mutex_unlock(&p->data->extra_lock);
 	}
+	pthread_mutex_unlock(&p->data->extra_lock);
 	return (NULL);
 }
 
@@ -64,15 +65,11 @@ void	*routine(void *arg)
 	go_eat(arg);
 	while (true)
 	{
-		if (p->data->end_reached == true)
-			break ;
 		go_sleep(arg);
-		if (p->data->end_reached == true)
-			break ;
 		go_think(arg);
 		if (p->times_eaten >= p->data->max_eat_count)
 			break ;
-		if (p->data->end_reached == true)
+		if (check_end(arg) == true)
 			break ;
 	}
 	pthread_join(maintainer, NULL);
