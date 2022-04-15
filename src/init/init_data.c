@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/06 20:31:08 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 18:15:21 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 	return (SUCCESS);
 }
 
-t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
+static t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 {
 	size_t	i;
 
@@ -68,6 +68,19 @@ t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 		if (pthread_mutex_init(&(*fork_array)[i], NULL) != SUCCESS)
 			return (FAILURE);
 		i++;
+	}
+	return (SUCCESS);
+}
+
+static t_status	init_mutexes(t_status status, t_data *data)
+{
+	if (status == SUCCESS)
+	{
+		if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
+			status = FAILURE;
+		pthread_mutex_init(&data->print_lock, NULL);
+		pthread_mutex_init(&data->extra_lock, NULL);
+		data->end_reached = false;
 	}
 	return (SUCCESS);
 }
@@ -95,28 +108,6 @@ t_status	init_data(t_data *data, int argc, char **argv)
 		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
 			status = FAILURE;
 	}
-	if (status == SUCCESS)
-	{
-		if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
-			status = FAILURE;
-		pthread_mutex_init(&data->print_lock, NULL);
-		pthread_mutex_init(&data->extra_lock, NULL);
-		data->end_reached = false;
-	}
+	status = init_mutexes(status, data);
 	return (status);
-}
-
-void	destroy_data(t_data *data)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < data->num_of_philo)
-	{
-		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->print_lock);
-	pthread_mutex_destroy(&data->extra_lock);
-	free(data->forks);
 }

@@ -6,7 +6,7 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/04/15 14:53:15 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/04/15 18:16:39 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SOURCES 		:= 	src/main.c \
 					src/utils.c \
 					src/init/init_data.c \
 					src/init/init_philos.c \
+					src/init/destroy_data.c \
 					src/actions/eat.c \
 					src/actions/sleep.c \
 					src/actions/think.c \
