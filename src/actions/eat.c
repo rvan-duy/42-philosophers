@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   actions.c                                          :+:    :+:            */
+/*   eat.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 14:08:09 by rvan-duy      ########   odam.nl         */
+/*   Created: 2022/04/15 14:50:19 by rvan-duy      #+#    #+#                 */
+/*   Updated: 2022/04/15 14:50:47 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,4 @@ void	go_eat(t_philo *p)
 	p->times_eaten++;
 	p->state = NOT_EAT;
 	pthread_mutex_unlock(&p->data->extra_lock);
-}
-
-void	go_sleep(t_philo *p)
-{
-	protected_print("is sleeping", p);
-	stupid_sleep(p->data->time_to_sleep);
-}
-
-void	go_think(t_philo *p)
-{
-	protected_print("is thinking", p);
-	go_eat(p);
 }
