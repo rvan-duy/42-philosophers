@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/13 14:48:30 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 14:13:03 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 static bool	philo_should_die(t_timestamp *current_timestamp, t_philo *p)
 {
-	pthread_mutex_lock(&p->data->extra_lock);
 	*current_timestamp = get_timestamp(p->data->start_time);
 	if (*current_timestamp - p->last_meal >= p->data->time_to_die
 		&& p->state != EAT)
@@ -36,26 +35,19 @@ static void	*maintainer_thread(void *arg)
 	p = arg;
 	while (true)
 	{
-		if (check_end(p) == true)
+		if (p->data->end_reached == true
+			|| p->times_eaten >= p->data->max_eat_count)
 			return (NULL);
 		pthread_mutex_lock(&p->data->extra_lock);
-		if (p->ate_enough == true)
-		{
-			pthread_mutex_unlock(&p->data->extra_lock);
-			return (NULL);
-		}
-		pthread_mutex_unlock(&p->data->extra_lock);
 		if (philo_should_die(&current_timestamp, arg) == true)
 		{
 			if (p->data->end_reached == false)
 			{
+				p->data->end_reached = true;
 				pthread_mutex_lock(&p->data->print_lock);
 				printf("%zu %zu died\n", current_timestamp, p->seat);
 				pthread_mutex_unlock(&p->data->print_lock);
 			}
-			p->data->end_reached = true;
-			pthread_mutex_unlock(&p->data->extra_lock);
-			return (NULL);
 		}
 		pthread_mutex_unlock(&p->data->extra_lock);
 	}
@@ -65,20 +57,22 @@ static void	*maintainer_thread(void *arg)
 void	*routine(void *arg)
 {
 	pthread_t	maintainer;
+	t_philo		*p;
 
+	p = arg;
 	pthread_create(&maintainer, NULL, &maintainer_thread, arg);
 	go_eat(arg);
 	while (true)
 	{
-		if (check_end(arg) == true)
+		if (p->data->end_reached == true)
 			break ;
 		go_sleep(arg);
-		if (check_end(arg) == true)
+		if (p->data->end_reached == true)
 			break ;
 		go_think(arg);
-		if (check_if_ate_enough(arg) == true)
+		if (p->times_eaten >= p->data->max_eat_count)
 			break ;
-		if (check_end(arg) == true)
+		if (p->data->end_reached == true)
 			break ;
 	}
 	pthread_join(maintainer, NULL);

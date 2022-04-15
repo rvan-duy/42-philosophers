@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/13 11:14:41 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 14:18:23 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ typedef size_t	t_timestamp;
 
 typedef enum e_state {
 	EAT,
-	SLEEP,
-	THINK,
+	NOT_EAT
 }	t_state;
 
 typedef struct s_data {
@@ -80,13 +79,10 @@ void		destroy_philos(t_philo **philos);
 // utils
 void		*my_calloc(size_t nmemb, size_t size);
 void		protected_print(char *msg, t_philo *p);
-bool		check_end(t_philo *p);
-bool		check_if_ate_enough(t_philo *p);
 
 // time
 size_t		get_time_in_ms(void);
 t_timestamp	get_timestamp(t_timestamp start_timestamp);
 void		stupid_sleep(size_t time2sleep);
-// void		update_time_since_last_meal(t_philo *philo);
 
 #endif

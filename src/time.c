@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/03 12:46:51 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/08 16:13:11 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 11:39:21 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ size_t	get_time_in_ms(void)
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	// printf("gettimeofday: %ld %d\n", time.tv_sec, time.tv_usec);
 	return (time.tv_sec * 1000LL + time.tv_usec / 1000);
 }
 
 t_timestamp	get_timestamp(t_timestamp start_timestamp)
 {
-	// printf("bla: %zu\n", get_time_in_ms() - start_timestamp);
 	return (get_time_in_ms() - start_timestamp);
 }
 
@@ -49,10 +47,3 @@ void	stupid_sleep(size_t time2sleep)
 	while (get_time_us() - start < time2sleep)
 		usleep(100);
 }
-
-// void	update_time_since_last_meal(t_philo *philo)
-// {
-// 	const size_t	diff = get_timestamp(philo->timestamp_last_meal);
-
-// 	philo->time_since_last_meal = diff - philo->data->start_time;
-// }

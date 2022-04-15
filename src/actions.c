@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/13 14:28:45 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 14:08:09 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,14 @@ static void	grab_fork(pthread_mutex_t *fork, t_philo *p)
 
 static void	hold_forks(t_philo *p)
 {
-	if (check_end(p) == false)
+	if (p->data->end_reached == false)
 	{
 		grab_fork(p->left_fork, p);
-		if (check_end(p) == false)
+		if (p->data->end_reached == false)
 			grab_fork(p->right_fork, p);
 		else
 		{
 			pthread_mutex_unlock(p->left_fork);
-			pthread_mutex_unlock(p->right_fork);
 		}
 	}
 }
@@ -51,7 +50,7 @@ static void	drop_forks(t_philo *p)
 void	go_eat(t_philo *p)
 {
 	hold_forks(p);
-	if (check_end(p) == true)
+	if (p->data->end_reached == true)
 	{
 		drop_forks(p);
 		return ;
@@ -65,23 +64,18 @@ void	go_eat(t_philo *p)
 	pthread_mutex_lock(&p->data->extra_lock);
 	p->last_meal = get_timestamp(p->data->start_time);
 	p->times_eaten++;
+	p->state = NOT_EAT;
 	pthread_mutex_unlock(&p->data->extra_lock);
 }
 
 void	go_sleep(t_philo *p)
 {
 	protected_print("is sleeping", p);
-	pthread_mutex_lock(&p->data->extra_lock);
-	p->state = SLEEP;
-	pthread_mutex_unlock(&p->data->extra_lock);
 	stupid_sleep(p->data->time_to_sleep);
 }
 
 void	go_think(t_philo *p)
 {
 	protected_print("is thinking", p);
-	pthread_mutex_lock(&p->data->extra_lock);
-	p->state = THINK;
-	pthread_mutex_unlock(&p->data->extra_lock);
 	go_eat(p);
 }
