@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:14:00 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 11:26:09 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 14:56:17 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	add_values(t_data *data, t_philo *philos)
 	while (i < data->num_of_philo)
 	{
 		philos[i].seat = i + 1;
-		philos[i].ate_enough = false;
 		philos[i].times_eaten = 0;
 		philos[i].last_meal = 0;
 		philos[i].data = data;

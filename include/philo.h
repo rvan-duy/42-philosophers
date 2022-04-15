@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 14:18:23 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/15 14:55:06 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_data {
 
 typedef struct s_philo {
 	size_t			seat;
-	bool			ate_enough;
 	size_t			times_eaten;
 	t_timestamp		last_meal;
 	t_state			state;
