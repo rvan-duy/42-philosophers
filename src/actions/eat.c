@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   actions.c                                          :+:    :+:            */
+/*   eat.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/03/30 14:55:50 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/03 18:02:48 by rvan-duy      ########   odam.nl         */
+/*   Created: 2022/04/15 14:50:19 by rvan-duy      #+#    #+#                 */
+/*   Updated: 2022/04/15 18:47:36 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,14 @@ static void	grab_fork(pthread_mutex_t *fork, t_philo *p)
 
 static void	hold_forks(t_philo *p)
 {
-	if (p->seat % 2 == 0)
+	if (check_end(p) == false)
 	{
-		if (check_end_condition(p) == false)
-		{
-			grab_fork(p->left_fork, p);
-			if (check_end_condition(p) == false)
-				grab_fork(p->right_fork, p);
-			else
-				pthread_mutex_unlock(p->left_fork);
-		}
-	}
-	else
-	{
-		if (check_end_condition(p) == false)
-		{
+		grab_fork(p->left_fork, p);
+		if (check_end(p) == false)
 			grab_fork(p->right_fork, p);
-			if (check_end_condition(p) == false)
-				grab_fork(p->left_fork, p);
-			else
-				pthread_mutex_unlock(p->right_fork);
+		else
+		{
+			pthread_mutex_unlock(p->left_fork);
 		}
 	}
 }
@@ -62,32 +50,20 @@ static void	drop_forks(t_philo *p)
 void	go_eat(t_philo *p)
 {
 	hold_forks(p);
-	if (check_end_condition(p) == true)
+	if (check_end(p) == true)
 	{
 		drop_forks(p);
 		return ;
 	}
 	protected_print("is eating", p);
+	pthread_mutex_lock(&p->data->extra_lock);
+	p->last_meal = get_timestamp(p->data->start_time);
+	p->state = EAT;
+	pthread_mutex_unlock(&p->data->extra_lock);
 	stupid_sleep(p->data->time_to_eat);
-	pthread_mutex_lock(&p->data->extra_lock);
-	p->time_since_last_meal = 0;
-	p->timestamp_last_meal = get_timestamp(p->data->start_time);
-	p->times_eaten++;
-	pthread_mutex_unlock(&p->data->extra_lock);
 	drop_forks(p);
-}
-
-void	go_sleep(t_philo *p)
-{
-	protected_print("is sleeping", p);
 	pthread_mutex_lock(&p->data->extra_lock);
-	p->time_since_last_meal += p->data->time_to_sleep;
+	p->times_eaten++;
+	p->state = NOT_EAT;
 	pthread_mutex_unlock(&p->data->extra_lock);
-	stupid_sleep(p->data->time_to_sleep);
-}
-
-void	go_think(t_philo *p)
-{
-	protected_print("is thinking", p);
-	go_eat(p);
 }
