@@ -6,17 +6,12 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 18:46:04 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/30 17:17:31 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
-
-// each thread needs separate thread to check for dead / enough_eaten
-// then you dont have to check every single time?
-
-// [1-200] 800 200 200
 
 static bool	philo_should_die(t_timestamp *current_timestamp, t_philo *p)
 {
