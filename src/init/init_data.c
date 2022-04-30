@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/30 16:07:49 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/30 17:16:18 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static char	*get_argument(t_arguments arg)
 	return (arguments[arg]);
 }
 
-// kill max int
 static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 {
 	int	i;
@@ -48,9 +47,9 @@ static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 		*num = *num * 10 + str[i] - 48;
 		i++;
 	}
-	if (*num == 0)
+	if (*num == 0 || *num > __INT_MAX__)
 	{
-		printf("%s cannot be zero\n", get_argument(arg));
+		printf("%s must be an int higher than 0\n", get_argument(arg));
 		return (FAILURE);
 	}
 	return (SUCCESS);
