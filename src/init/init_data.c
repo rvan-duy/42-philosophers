@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 18:15:21 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/04/30 16:07:49 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static char	*get_argument(t_arguments arg)
 	return (arguments[arg]);
 }
 
+// kill max int
 static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
 {
 	int	i;
@@ -74,15 +75,12 @@ static t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 
 static t_status	init_mutexes(t_status status, t_data *data)
 {
-	if (status == SUCCESS)
-	{
-		if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
-			status = FAILURE;
-		pthread_mutex_init(&data->print_lock, NULL);
-		pthread_mutex_init(&data->extra_lock, NULL);
-		data->end_reached = false;
-	}
-	return (SUCCESS);
+	if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
+		status = FAILURE;
+	pthread_mutex_init(&data->print_lock, NULL);
+	pthread_mutex_init(&data->extra_lock, NULL);
+	data->end_reached = false;
+	return (status);
 }
 
 t_status	init_data(t_data *data, int argc, char **argv)
@@ -108,6 +106,7 @@ t_status	init_data(t_data *data, int argc, char **argv)
 		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
 			status = FAILURE;
 	}
-	status = init_mutexes(status, data);
+	if (status == SUCCESS)
+		status = init_mutexes(status, data);
 	return (status);
 }
