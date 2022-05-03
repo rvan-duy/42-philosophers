@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/30 17:17:31 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/03 11:19:28 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	*maintainer_thread(void *arg)
 			}
 		}
 		pthread_mutex_unlock(&p->data->extra_lock);
+		usleep(500);
 	}
 	pthread_mutex_unlock(&p->data->extra_lock);
 	return (NULL);
