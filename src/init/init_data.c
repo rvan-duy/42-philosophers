@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/30 17:16:18 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/03 11:37:02 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_status	init_data(t_data *data, int argc, char **argv)
 	status = SUCCESS;
 	if (philo_atoi(&data->num_of_philo, argv[1], NUM_OF_PHILO) == FAILURE)
 		status = FAILURE;
-	if (data->num_of_philo > 200)
+	if (data->num_of_philo > 200 && status == SUCCESS)
 	{
 		status = FAILURE;
 		printf("number_of_philosophers cannot be more than 200\n");
