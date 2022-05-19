@@ -6,14 +6,14 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/03 12:46:51 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 11:39:21 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/19 17:38:06 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <sys/time.h>
 
-size_t	get_time_in_ms(void)
+t_timestamp	get_time_in_ms(void)
 {
 	struct timeval	time;
 
@@ -21,9 +21,9 @@ size_t	get_time_in_ms(void)
 	return (time.tv_sec * 1000LL + time.tv_usec / 1000);
 }
 
-t_timestamp	get_timestamp(t_timestamp start_timestamp)
+t_timestamp get_timestamp(const t_timestamp start_time)
 {
-	return (get_time_in_ms() - start_timestamp);
+	return (get_time_in_ms() - start_time);
 }
 
 static size_t	get_time_us(void)

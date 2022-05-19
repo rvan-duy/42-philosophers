@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/03 11:37:02 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/19 15:34:11 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 {
 	size_t	i;
 
-	*fork_array = my_calloc(num, sizeof(pthread_mutex_t));
+	*fork_array = util_calloc(num, sizeof(pthread_mutex_t));
 	if (*fork_array == NULL)
 		return (FAILURE);
 	i = 0;
@@ -78,7 +78,7 @@ static t_status	init_mutexes(t_status status, t_data *data)
 		status = FAILURE;
 	pthread_mutex_init(&data->print_lock, NULL);
 	pthread_mutex_init(&data->extra_lock, NULL);
-	data->end_reached = false;
+	data->a_philo_died = false;
 	return (status);
 }
 

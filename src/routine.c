@@ -6,68 +6,31 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/03 11:19:28 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/19 19:07:46 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
-
-static bool	philo_should_die(t_timestamp *current_timestamp, t_philo *p)
-{
-	*current_timestamp = get_timestamp(p->data->start_time);
-	if (*current_timestamp - p->last_meal >= p->data->time_to_die
-		&& p->state != EAT)
-		return (true);
-	return (false);
-}
-
-static void	*maintainer_thread(void *arg)
-{
-	t_philo		*p;
-	t_timestamp	current_timestamp;
-
-	p = arg;
-	while (true)
-	{
-		pthread_mutex_lock(&p->data->extra_lock);
-		if (p->data->end_reached == true
-			|| p->times_eaten >= p->data->max_eat_count)
-			break ;
-		if (philo_should_die(&current_timestamp, arg) == true)
-		{
-			if (p->data->end_reached == false)
-			{
-				pthread_mutex_lock(&p->data->print_lock);
-				p->data->end_reached = true;
-				printf("%zu %zu died\n", current_timestamp, p->seat);
-				pthread_mutex_unlock(&p->data->print_lock);
-			}
-		}
-		pthread_mutex_unlock(&p->data->extra_lock);
-		usleep(500);
-	}
-	pthread_mutex_unlock(&p->data->extra_lock);
-	return (NULL);
-}
 
 void	*routine(void *arg)
 {
-	pthread_t	maintainer;
-	t_philo		*p;
+	t_philo *p;
 
 	p = arg;
-	pthread_create(&maintainer, NULL, &maintainer_thread, arg);
-	go_eat(arg);
+	if (p->seat % 2 == 0)
+		usleep(ODD_PHILO_WAIT_TIME_BEFORE_START);
 	while (true)
 	{
-		go_sleep(arg);
-		go_think(arg);
-		if (p->times_eaten >= p->data->max_eat_count)
+		go_eat(p);
+		go_sleep(p);
+		go_think(p);
+		pthread_mutex_lock(&p->data->extra_lock);
+		if (p->data->a_philo_died == true)
+		{
+			pthread_mutex_unlock(&p->data->extra_lock);
 			break ;
-		if (check_end(arg) == true)
-			break ;
+		}
+		pthread_mutex_unlock(&p->data->extra_lock);
 	}
-	pthread_join(maintainer, NULL);
 	return (NULL);
 }

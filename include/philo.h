@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 18:42:53 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/19 19:28:58 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,13 @@
 # include <pthread.h>
 # include <stdbool.h>
 
+#      include <stdio.h>
+
 typedef size_t	t_timestamp;
+
+// sleep timers in microseconds
+# define ODD_PHILO_WAIT_TIME_BEFORE_START 10
+# define SLEEP_INBETWEEN_PHILO_START 200
 
 typedef enum e_state {
 	EAT,
@@ -31,18 +37,17 @@ typedef struct s_data {
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			max_eat_count;
-	size_t			start_time;
+	t_timestamp		start_time;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	extra_lock;
-	bool			end_reached;
+	bool			a_philo_died;
 }	t_data;
 
 typedef struct s_philo {
 	size_t			seat;
 	size_t			times_eaten;
 	t_timestamp		last_meal;
-	t_state			state;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
@@ -76,13 +81,20 @@ void		destroy_data(t_data *data);
 void		destroy_philos(t_philo **philos);
 
 // utils
-void		*my_calloc(size_t nmemb, size_t size);
-void		protected_print(char *msg, t_philo *p);
-bool		check_end(t_philo *p);
+void	*util_calloc(size_t nmemb, size_t size);
+size_t	util_strlen(const char *str);
+int		util_putstr_fd(const char *s, int fd);
+int		util_putchar_fd(const char c, int fd);
+void	util_putnbr_fd(size_t n, int fd);
+
+// print
+void		print_dead(t_philo *p, const t_timestamp current_time);
+bool		is_dead(t_philo *p);
+bool		print_message(const char *message, t_philo *p);
 
 // time
-size_t		get_time_in_ms(void);
-t_timestamp	get_timestamp(t_timestamp start_timestamp);
-void		stupid_sleep(size_t time2sleep);
+t_timestamp		get_time_in_ms(void);
+t_timestamp 	get_timestamp(const t_timestamp start_time);
+void			stupid_sleep(size_t time2sleep);
 
 #endif
