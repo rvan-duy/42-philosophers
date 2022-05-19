@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/26 16:44:32 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/19 19:08:04 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/19 20:34:49 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static t_status	wait_for_threads(size_t num, pthread_t *threads)
 	return (SUCCESS);
 }
 
+// TODO: monitor thread
 t_status	start_threads(t_data *data, t_philo *philos)
 {
 	pthread_t	*threads;
@@ -51,6 +52,7 @@ t_status	start_threads(t_data *data, t_philo *philos)
 	data->start_time = get_time_in_ms();
 	if (create_threads(data->num_of_philo, threads, philos) == FAILURE)
 		return (FAILURE);
+	// monitor_threads(philos);
 	if (wait_for_threads(data->num_of_philo, threads) == FAILURE)
 		return (FAILURE);
 	free(threads);
