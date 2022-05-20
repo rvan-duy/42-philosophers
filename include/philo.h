@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/19 19:28:58 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/20 11:39:25 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ void		destroy_data(t_data *data);
 void		destroy_philos(t_philo **philos);
 
 // utils
-void	*util_calloc(size_t nmemb, size_t size);
-size_t	util_strlen(const char *str);
-int		util_putstr_fd(const char *s, int fd);
-int		util_putchar_fd(const char c, int fd);
-void	util_putnbr_fd(size_t n, int fd);
+void		*util_calloc(size_t nmemb, size_t size);
+size_t		util_strlen(const char *str);
+int			util_putstr_fd(const char *s, int fd);
+int			util_putchar_fd(const char c, int fd);
+void		util_putnbr_fd(size_t n, int fd);
 
 // print
 void		print_dead(t_philo *p, const t_timestamp current_time);
@@ -93,8 +93,8 @@ bool		is_dead(t_philo *p);
 bool		print_message(const char *message, t_philo *p);
 
 // time
-t_timestamp		get_time_in_ms(void);
-t_timestamp 	get_timestamp(const t_timestamp start_time);
-void			stupid_sleep(size_t time2sleep);
+t_timestamp	get_time_in_ms(void);
+t_timestamp	get_timestamp(const t_timestamp start_time);
+void		stupid_sleep(size_t time2sleep);
 
 #endif
