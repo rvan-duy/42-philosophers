@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/19 14:56:22 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/20 13:40:44 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/20 18:05:46 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 
 void	print_dead(t_philo *p, const t_timestamp current_time)
 {
+	pthread_mutex_lock(&p->data->philo_died_lock);
 	p->data->a_philo_died = true;
-	pthread_mutex_lock(&p->data->print_lock);
-	util_putnbr_fd(current_time, STDOUT_FILENO);
-	util_putchar_fd(' ', STDOUT_FILENO);
-	util_putnbr_fd(p->seat, STDOUT_FILENO);
-	util_putstr_fd(" died", STDOUT_FILENO);
-	util_putchar_fd('\n', STDOUT_FILENO);
-	pthread_mutex_unlock(&p->data->print_lock);
+	pthread_mutex_unlock(&p->data->philo_died_lock);
+	printf("%zu %zu died\n", current_time, p->seat);
+	// pthread_mutex_lock(&p->data->print_lock);
+	// util_putnbr_fd(current_time, STDOUT_FILENO);
+	// util_putchar_fd(' ', STDOUT_FILENO);
+	// util_putnbr_fd(p->seat, STDOUT_FILENO);
+	// util_putstr_fd(" died", STDOUT_FILENO);
+	// util_putchar_fd('\n', STDOUT_FILENO);
+	// pthread_mutex_unlock(&p->data->print_lock);
 }
 
 bool	is_dead(t_philo *p)
