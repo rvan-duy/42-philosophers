@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/03 12:46:51 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/19 17:38:06 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/20 13:55:53 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ void	stupid_sleep(size_t time2sleep)
 	start = get_time_us();
 	time2sleep *= 1000;
 	while (get_time_us() - start < time2sleep)
-		usleep(100);
+		usleep(250);
 }

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/20 11:39:25 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/20 13:49:07 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <stdbool.h>
-
-#      include <stdio.h>
+#   include <stdio.h>
 
 typedef size_t	t_timestamp;
 
 // sleep timers in microseconds
-# define ODD_PHILO_WAIT_TIME_BEFORE_START 10
-# define SLEEP_INBETWEEN_PHILO_START 200
+# define ODD_PHILO_WAIT_TIME_BEFORE_START 500
+# define SLEEP_INBETWEEN_PHILO_START 250
+# define MONITORING_DELAY 250
 
 typedef enum e_state {
 	EAT,
@@ -40,7 +40,8 @@ typedef struct s_data {
 	t_timestamp		start_time;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	extra_lock;
+	pthread_mutex_t	*last_meal_lock;
+	pthread_mutex_t	philo_died_lock;
 	bool			a_philo_died;
 }	t_data;
 
@@ -50,6 +51,7 @@ typedef struct s_philo {
 	t_timestamp		last_meal;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*last_meal_lock;
 	t_data			*data;
 }	t_philo;
 

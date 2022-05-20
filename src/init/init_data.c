@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/19 15:34:11 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/20 13:20:07 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,32 @@ static t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 	return (SUCCESS);
 }
 
+static t_status	init_last_meal_locks(size_t num,
+										pthread_mutex_t **last_meal_lock)
+{
+	size_t	i;
+
+	*last_meal_lock = util_calloc(num, sizeof(pthread_mutex_t));
+	if (*last_meal_lock == NULL)
+		return (FAILURE);
+	i = 0;
+	while (i < num)
+	{
+		if (pthread_mutex_init(&(*last_meal_lock)[i], NULL) != SUCCESS)
+			return (FAILURE);
+		i++;
+	}
+	return (SUCCESS);
+}
+
 static t_status	init_mutexes(t_status status, t_data *data)
 {
 	if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
 		status = FAILURE;
+	if (init_last_meal_locks(data->num_of_philo, &data->last_meal_lock) == FAILURE)
+		status = FAILURE;
 	pthread_mutex_init(&data->print_lock, NULL);
-	pthread_mutex_init(&data->extra_lock, NULL);
+	pthread_mutex_init(&data->philo_died_lock, NULL);
 	data->a_philo_died = false;
 	return (status);
 }

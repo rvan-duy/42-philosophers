@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/26 16:44:32 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/20 11:35:16 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/20 13:18:01 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,32 @@ static t_status	wait_for_threads(size_t num, pthread_t *threads)
 	return (SUCCESS);
 }
 
-// static void	monitor_threads(t_philo *philos)
-// {
-	
+static void	monitor_threads(t_philo *p)
+{
+	const t_timestamp	time_to_die = p->data->time_to_die;
+	t_timestamp			current_time;
+	size_t				i;
 
-// 	while (true)
-// 	{
-		
-// 	}
-// 	return ;
-// }
+	i = 0;
+	while (true)
+	{
+		current_time = get_timestamp(p[i].data->start_time);
+		pthread_mutex_lock(p[i].last_meal_lock);
+		if (current_time - p[i].last_meal >= time_to_die)
+		{
+			pthread_mutex_unlock(p[i].last_meal_lock);
+			print_dead(&p[i], current_time);
+			break ;
+		}
+		pthread_mutex_unlock(p[i].last_meal_lock);
+		i++;
+		if (i == p[i - 1].data->num_of_philo)
+			i = 0;
+		usleep(MONITORING_DELAY);
+	}
+	return ;
+}
 
-// TODO: monitor thread
 t_status	start_threads(t_data *data, t_philo *philos)
 {
 	pthread_t	*threads;
@@ -63,7 +77,7 @@ t_status	start_threads(t_data *data, t_philo *philos)
 	data->start_time = get_time_in_ms();
 	if (create_threads(data->num_of_philo, threads, philos) == FAILURE)
 		return (FAILURE);
-	// monitor_threads(philos);
+	monitor_threads(philos);
 	if (wait_for_threads(data->num_of_philo, threads) == FAILURE)
 		return (FAILURE);
 	free(threads);
