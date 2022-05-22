@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/20 18:11:58 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/22 13:15:48 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,25 @@ static t_status	init_mutexes(t_status status, t_data *data)
 	return (status);
 }
 
+static t_status	get_max_eat_count(t_data *data, int argc, char **argv)
+{
+	t_status	status;
+
+	status = SUCCESS;
+	if (argc == 6)
+	{
+		data->max_eat_count = true;
+		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
+			status = FAILURE;
+	}
+	else
+	{
+		data->max_eat_count = 0;
+		data->max_eat_count = false;
+	}
+	return (status);
+}
+
 t_status	init_data(t_data *data, int argc, char **argv)
 {
 	t_status	status;
@@ -120,11 +139,7 @@ t_status	init_data(t_data *data, int argc, char **argv)
 		status = FAILURE;
 	if (philo_atoi(&data->time_to_sleep, argv[4], TIME_TO_SLEEP) == FAILURE)
 		status = FAILURE;
-	if (argc == 6)
-	{
-		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
-			status = FAILURE;
-	}
+	status = get_max_eat_count(data, argc, argv);
 	if (status == SUCCESS)
 		status = init_mutexes(status, data);
 	return (status);
