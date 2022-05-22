@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/19 15:32:29 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/22 13:04:38 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*util_calloc(size_t nmemb, size_t size)
 
 size_t	util_strlen(const char *str)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (str[i])

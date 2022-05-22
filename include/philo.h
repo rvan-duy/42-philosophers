@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/20 18:10:19 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/22 13:10:57 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <stdbool.h>
-#   include <stdio.h>
+# include <stdio.h>
 
 typedef size_t	t_timestamp;
 
@@ -37,6 +37,7 @@ typedef struct s_data {
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			max_eat_count;
+	bool			max_eat_count_enabled;
 	t_timestamp		start_time;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;

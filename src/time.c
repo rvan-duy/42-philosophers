@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/03 12:46:51 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/20 13:55:53 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/22 13:04:31 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_timestamp	get_time_in_ms(void)
 	return (time.tv_sec * 1000LL + time.tv_usec / 1000);
 }
 
-t_timestamp get_timestamp(const t_timestamp start_time)
+t_timestamp	get_timestamp(const t_timestamp start_time)
 {
 	return (get_time_in_ms() - start_time);
 }
