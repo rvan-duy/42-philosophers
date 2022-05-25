@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/22 13:01:51 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/25 14:58:48 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	*routine(void *arg)
 	while (true)
 	{
 		go_eat(p);
+		if (has_eaten_enough(p) == true)
+			return (NULL);
 		go_sleep(p);
 		go_think(p);
 		pthread_mutex_lock(&p->data->philo_died_lock);

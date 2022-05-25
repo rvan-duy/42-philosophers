@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/22 13:15:48 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/25 14:58:29 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,14 @@ static t_status	get_max_eat_count(t_data *data, int argc, char **argv)
 	status = SUCCESS;
 	if (argc == 6)
 	{
-		data->max_eat_count = true;
+		data->max_eat_count_enabled = true;
 		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
 			status = FAILURE;
 	}
 	else
 	{
 		data->max_eat_count = 0;
-		data->max_eat_count = false;
+		data->max_eat_count_enabled = false;
 	}
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/22 13:10:57 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/25 14:30:48 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void		*routine(void *arg);
 void		go_eat(t_philo *p);
 void		go_sleep(t_philo *p);
 void		go_think(t_philo *p);
+
+// monitor
+bool		has_eaten_enough(t_philo *p);
+void		monitor_threads(t_philo *p);
 
 // init & destroy
 t_status	init_data(t_data *data, int argc, char **argv);

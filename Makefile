@@ -6,7 +6,7 @@
 #    By: rvan-duy <rvan-duy@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/25 13:42:50 by rvan-duy      #+#    #+#                  #
-#    Updated: 2022/05/19 15:19:01 by rvan-duy      ########   odam.nl          #
+#    Updated: 2022/05/25 14:19:46 by rvan-duy      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ INCLUDE_FLAGS 	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
 SOURCES 		:= 	src/main.c \
 					src/start_threads.c \
+					src/monitor.c \
 					src/routine.c \
 					src/utils.c \
 					src/print.c \

@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/26 16:44:32 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/22 13:09:19 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/25 14:14:01 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,6 @@ static t_status	wait_for_threads(size_t num, pthread_t *threads)
 		i++;
 	}
 	return (SUCCESS);
-}
-
-static void	monitor_threads(t_philo *p)
-{
-	const t_timestamp	time_to_die = p->data->time_to_die;
-	t_timestamp			current_time;
-	size_t				i;
-
-	while (true)
-	{
-		i = 0;
-		while (i < p->data->num_of_philo)
-		{
-			current_time = get_timestamp(p[i].data->start_time);
-			pthread_mutex_lock(p[i].last_meal_lock);
-			if (current_time - p[i].last_meal > time_to_die)
-			{
-				pthread_mutex_unlock(p[i].last_meal_lock);
-				print_dead(&p[i], current_time);
-				return ;
-			}
-			pthread_mutex_unlock(p[i].last_meal_lock);
-			i++;
-		}
-		usleep(MONITORING_DELAY);
-	}
-	return ;
 }
 
 t_status	start_threads(t_data *data, t_philo *philos)
