@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/25 14:30:48 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/25 15:59:37 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ typedef struct s_data {
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*last_meal_lock;
+	pthread_mutex_t	*times_eaten_lock;
 	pthread_mutex_t	philo_died_lock;
 	bool			a_philo_died;
+	bool			philos_ate_enough;
 }	t_data;
 
 typedef struct s_philo {
@@ -53,6 +55,7 @@ typedef struct s_philo {
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*last_meal_lock;
+	pthread_mutex_t	*times_eaten_lock;
 	t_data			*data;
 }	t_philo;
 

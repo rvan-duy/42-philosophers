@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/15 18:12:48 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/20 13:12:05 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/25 15:31:08 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	destroy_data(t_data *data)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		pthread_mutex_destroy(&data->last_meal_lock[i]);
+		pthread_mutex_destroy(&data->times_eaten_lock[i]);
 		i++;
 	}
 	pthread_mutex_destroy(&data->print_lock);
