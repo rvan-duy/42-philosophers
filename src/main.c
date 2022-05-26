@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:19:59 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/16 17:51:12 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 14:40:46 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 			return (EXIT_FAILURE);
 		start_threads(&data, philos);
 		destroy_data(&data);
-		destroy_philos(&philos);
+		free(philos);
 	}
 	else
 		printf("Usage:\n%s <number_of_philosophers> \

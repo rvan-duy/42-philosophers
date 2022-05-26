@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/26 13:50:25 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 14:07:57 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static t_status	init_mutexes(t_status status, t_data *data)
 		status = FAILURE;
 	if (init_mutex_array(data->num_of_philo, &data->last_meal_lock) == FAILURE)
 		status = FAILURE;
-	if (init_mutex_array(data->num_of_philo, &data->times_eaten_lock) \
-													== FAILURE)
+	if (init_mutex_array(data->num_of_philo, \
+							&data->times_eaten_lock) == FAILURE)
 		status = FAILURE;
 	pthread_mutex_init(&data->print_lock, NULL);
 	pthread_mutex_init(&data->philo_died_lock, NULL);

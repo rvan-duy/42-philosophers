@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:14:00 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/25 15:11:00 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 14:11:55 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,4 @@ t_status	init_philos(t_data *data, t_philo **philos)
 		return (FAILURE);
 	add_values(data, *philos);
 	return (SUCCESS);
-}
-
-void	destroy_philos(t_philo **philos)
-{
-	free(*philos);
 }
