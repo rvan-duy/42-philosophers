@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/03 11:37:02 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/25 16:00:04 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 {
 	size_t	i;
 
-	*fork_array = my_calloc(num, sizeof(pthread_mutex_t));
+	*fork_array = util_calloc(num, sizeof(pthread_mutex_t));
 	if (*fork_array == NULL)
 		return (FAILURE);
 	i = 0;
@@ -72,13 +72,73 @@ static t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
 	return (SUCCESS);
 }
 
+static t_status	init_last_meal_locks(size_t num,
+										pthread_mutex_t **last_meal_lock)
+{
+	size_t	i;
+
+	*last_meal_lock = util_calloc(num, sizeof(pthread_mutex_t));
+	if (*last_meal_lock == NULL)
+		return (FAILURE);
+	i = 0;
+	while (i < num)
+	{
+		if (pthread_mutex_init(&(*last_meal_lock)[i], NULL) != SUCCESS)
+			return (FAILURE);
+		i++;
+	}
+	return (SUCCESS);
+}
+
+static t_status	init_times_eaten_locks(size_t num,
+										pthread_mutex_t **times_eaten_lock)
+{
+	size_t	i;
+
+	*times_eaten_lock = util_calloc(num, sizeof(pthread_mutex_t));
+	if (*times_eaten_lock == NULL)
+		return (FAILURE);
+	i = 0;
+	while (i < num)
+	{
+		if (pthread_mutex_init(&(*times_eaten_lock)[i], NULL) != SUCCESS)
+			return (FAILURE);
+		i++;
+	}
+	return (SUCCESS);
+}
+
 static t_status	init_mutexes(t_status status, t_data *data)
 {
 	if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
 		status = FAILURE;
+	if (init_last_meal_locks(data->num_of_philo, &data->last_meal_lock) == FAILURE)
+		status = FAILURE;
+	if (init_times_eaten_locks(data->num_of_philo, &data->times_eaten_lock) == FAILURE)
+		status = FAILURE;
 	pthread_mutex_init(&data->print_lock, NULL);
-	pthread_mutex_init(&data->extra_lock, NULL);
-	data->end_reached = false;
+	pthread_mutex_init(&data->philo_died_lock, NULL);
+	data->a_philo_died = false;
+	data->philos_ate_enough = false;
+	return (status);
+}
+
+static t_status	get_max_eat_count(t_data *data, int argc, char **argv)
+{
+	t_status	status;
+
+	status = SUCCESS;
+	if (argc == 6)
+	{
+		data->max_eat_count_enabled = true;
+		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
+			status = FAILURE;
+	}
+	else
+	{
+		data->max_eat_count = 0;
+		data->max_eat_count_enabled = false;
+	}
 	return (status);
 }
 
@@ -100,11 +160,7 @@ t_status	init_data(t_data *data, int argc, char **argv)
 		status = FAILURE;
 	if (philo_atoi(&data->time_to_sleep, argv[4], TIME_TO_SLEEP) == FAILURE)
 		status = FAILURE;
-	if (argc == 6)
-	{
-		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
-			status = FAILURE;
-	}
+	status = get_max_eat_count(data, argc, argv);
 	if (status == SUCCESS)
 		status = init_mutexes(status, data);
 	return (status);

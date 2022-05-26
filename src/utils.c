@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/04/15 18:42:41 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/22 13:04:38 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <string.h>
 #include <stdio.h>
 
-void	*my_calloc(size_t nmemb, size_t size)
+void	*util_calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
 
@@ -27,24 +27,31 @@ void	*my_calloc(size_t nmemb, size_t size)
 	return (ptr);
 }
 
-void	protected_print(char *msg, t_philo *p)
+size_t	util_strlen(const char *str)
 {
-	pthread_mutex_lock(&p->data->print_lock);
-	if (p->data->end_reached == false)
-	{
-		printf("%zu %zu %s\n", get_timestamp(p->data->start_time), p->seat, msg);
-	}
-	pthread_mutex_unlock(&p->data->print_lock);
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-bool	check_end(t_philo *p)
+int	util_putstr_fd(const char *s, int fd)
 {
-	pthread_mutex_lock(&p->data->extra_lock);
-	if (p->data->end_reached == true)
-	{
-		pthread_mutex_unlock(&p->data->extra_lock);
-		return (true);
-	}
-	pthread_mutex_unlock(&p->data->extra_lock);
-	return (false);
+	if (!s)
+		return (0);
+	return (write(fd, s, util_strlen(s)));
+}
+
+int	util_putchar_fd(const char c, int fd)
+{
+	return (write(fd, &c, 1));
+}
+
+void	util_putnbr_fd(size_t n, int fd)
+{
+	if (n >= 10)
+		util_putnbr_fd(n / 10, fd);
+	util_putchar_fd(n % 10 + 48, fd);
 }
