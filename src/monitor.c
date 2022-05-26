@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/25 14:13:48 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/25 16:11:16 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 13:32:22 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,33 @@ static bool	is_supposed_to_die(t_philo *p)
 		print_dead(p, current_time);
 		return (true);
 	}
-	pthread_mutex_unlock(p->last_meal_lock);
-	return (false);
+	else
+	{
+		pthread_mutex_unlock(p->last_meal_lock);
+		return (false);
+	}
+}
+
+static bool	all_philos_are_finished(t_philo *p, size_t philos_finished)
+{
+	pthread_mutex_lock(&p->data->philo_died_lock);
+	if (philos_finished == p->data->num_of_philo)
+	{
+		p->data->a_philo_died = true;
+		pthread_mutex_unlock(&p->data->philo_died_lock);
+		return (true);
+	}
+	else
+	{
+		pthread_mutex_unlock(&p->data->philo_died_lock);
+		return (false);
+	}
 }
 
 void	monitor_threads(t_philo *p)
 {
-	const size_t	num_of_philo = p->data->num_of_philo;
-	size_t			philos_finished;
-	size_t			i;
+	size_t	i;
+	size_t	philos_finished;
 
 	while (true)
 	{
@@ -64,14 +82,8 @@ void	monitor_threads(t_philo *p)
 				return ;
 			i++;
 		}
-		pthread_mutex_lock(&p->data->philo_died_lock);
-		if (philos_finished == num_of_philo)
-		{
-			p->data->a_philo_died = true;
-			pthread_mutex_unlock(&p->data->philo_died_lock);
+		if (all_philos_are_finished(p, philos_finished) == true)
 			return ;
-		}
-		pthread_mutex_unlock(&p->data->philo_died_lock);
 		usleep(MONITORING_DELAY);
 	}
 	return ;

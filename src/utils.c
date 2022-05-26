@@ -6,13 +6,53 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/27 14:19:15 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/22 13:04:38 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 13:47:39 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <string.h>
 #include <stdio.h>
+
+static char	*get_argument(t_arguments arg)
+{
+	char *const	arguments[] = {
+		"number_of_philosophers",
+		"time_to_die",
+		"time_to_eat",
+		"time_to_sleep",
+		"number_of_times_each_philosopher_must_eat"
+	};
+
+	return (arguments[arg]);
+}
+
+t_status	util_atoi(size_t *num, char *str, t_arguments arg)
+{
+	int	i;
+
+	*num = 0;
+	i = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
+	if (str[i] == '-')
+	{
+		printf("%s cannot be negative\n", get_argument(arg));
+		return (FAILURE);
+	}
+	if (str[i] == '+')
+		i++;
+	while (str[i] != '\0' && str[i] >= 48 && str[i] <= 57)
+	{
+		*num = *num * 10 + str[i] - 48;
+		i++;
+	}
+	if (*num == 0 || *num > __INT_MAX__)
+	{
+		printf("%s must be an int higher than 0\n", get_argument(arg));
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
 
 void	*util_calloc(size_t nmemb, size_t size)
 {
@@ -25,33 +65,4 @@ void	*util_calloc(size_t nmemb, size_t size)
 		return (ptr);
 	memset(ptr, 0, nmemb * size);
 	return (ptr);
-}
-
-size_t	util_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-int	util_putstr_fd(const char *s, int fd)
-{
-	if (!s)
-		return (0);
-	return (write(fd, s, util_strlen(s)));
-}
-
-int	util_putchar_fd(const char c, int fd)
-{
-	return (write(fd, &c, 1));
-}
-
-void	util_putnbr_fd(size_t n, int fd)
-{
-	if (n >= 10)
-		util_putnbr_fd(n / 10, fd);
-	util_putchar_fd(n % 10 + 48, fd);
 }

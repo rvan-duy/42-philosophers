@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/25 15:59:37 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 13:47:09 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,7 @@ void		destroy_philos(t_philo **philos);
 
 // utils
 void		*util_calloc(size_t nmemb, size_t size);
-size_t		util_strlen(const char *str);
-int			util_putstr_fd(const char *s, int fd);
-int			util_putchar_fd(const char c, int fd);
-void		util_putnbr_fd(size_t n, int fd);
+t_status	util_atoi(size_t *num, char *str, t_arguments arg);
 
 // print
 void		print_dead(t_philo *p, const t_timestamp current_time);

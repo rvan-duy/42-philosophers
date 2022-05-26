@@ -6,102 +6,23 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/25 16:00:04 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 13:47:34 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
-#include <sys/time.h>
 
-static char	*get_argument(t_arguments arg)
-{
-	char *const	arguments[] = {
-		"number_of_philosophers",
-		"time_to_die",
-		"time_to_eat",
-		"time_to_sleep",
-		"number_of_times_each_philosopher_must_eat"
-	};
-
-	return (arguments[arg]);
-}
-
-static t_status	philo_atoi(size_t *num, char *str, t_arguments arg)
-{
-	int	i;
-
-	*num = 0;
-	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
-		i++;
-	if (str[i] == '-')
-	{
-		printf("%s cannot be negative\n", get_argument(arg));
-		return (FAILURE);
-	}
-	if (str[i] == '+')
-		i++;
-	while (str[i] != '\0' && str[i] >= 48 && str[i] <= 57)
-	{
-		*num = *num * 10 + str[i] - 48;
-		i++;
-	}
-	if (*num == 0 || *num > __INT_MAX__)
-	{
-		printf("%s must be an int higher than 0\n", get_argument(arg));
-		return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-static t_status	init_forks(size_t num, pthread_mutex_t **fork_array)
+static t_status	init_mutex_array(size_t num, pthread_mutex_t **mutex_array)
 {
 	size_t	i;
 
-	*fork_array = util_calloc(num, sizeof(pthread_mutex_t));
-	if (*fork_array == NULL)
+	*mutex_array = util_calloc(num, sizeof(pthread_mutex_t));
+	if (*mutex_array == NULL)
 		return (FAILURE);
-	i = 0;
 	while (i < num)
 	{
-		if (pthread_mutex_init(&(*fork_array)[i], NULL) != SUCCESS)
-			return (FAILURE);
-		i++;
-	}
-	return (SUCCESS);
-}
-
-static t_status	init_last_meal_locks(size_t num,
-										pthread_mutex_t **last_meal_lock)
-{
-	size_t	i;
-
-	*last_meal_lock = util_calloc(num, sizeof(pthread_mutex_t));
-	if (*last_meal_lock == NULL)
-		return (FAILURE);
-	i = 0;
-	while (i < num)
-	{
-		if (pthread_mutex_init(&(*last_meal_lock)[i], NULL) != SUCCESS)
-			return (FAILURE);
-		i++;
-	}
-	return (SUCCESS);
-}
-
-static t_status	init_times_eaten_locks(size_t num,
-										pthread_mutex_t **times_eaten_lock)
-{
-	size_t	i;
-
-	*times_eaten_lock = util_calloc(num, sizeof(pthread_mutex_t));
-	if (*times_eaten_lock == NULL)
-		return (FAILURE);
-	i = 0;
-	while (i < num)
-	{
-		if (pthread_mutex_init(&(*times_eaten_lock)[i], NULL) != SUCCESS)
+		if (pthread_mutex_init(&(*mutex_array)[i], NULL) != SUCCESS)
 			return (FAILURE);
 		i++;
 	}
@@ -110,11 +31,12 @@ static t_status	init_times_eaten_locks(size_t num,
 
 static t_status	init_mutexes(t_status status, t_data *data)
 {
-	if (init_forks(data->num_of_philo, &data->forks) == FAILURE)
+	if (init_mutex_array(data->num_of_philo, &data->forks) == FAILURE)
 		status = FAILURE;
-	if (init_last_meal_locks(data->num_of_philo, &data->last_meal_lock) == FAILURE)
+	if (init_mutex_array(data->num_of_philo, &data->last_meal_lock) == FAILURE)
 		status = FAILURE;
-	if (init_times_eaten_locks(data->num_of_philo, &data->times_eaten_lock) == FAILURE)
+	if (init_mutex_array(data->num_of_philo, &data->times_eaten_lock) \
+													== FAILURE)
 		status = FAILURE;
 	pthread_mutex_init(&data->print_lock, NULL);
 	pthread_mutex_init(&data->philo_died_lock, NULL);
