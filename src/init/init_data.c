@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/26 13:47:34 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/05/26 13:50:25 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static t_status	init_mutex_array(size_t num, pthread_mutex_t **mutex_array)
 	*mutex_array = util_calloc(num, sizeof(pthread_mutex_t));
 	if (*mutex_array == NULL)
 		return (FAILURE);
+	i = 0;
 	while (i < num)
 	{
 		if (pthread_mutex_init(&(*mutex_array)[i], NULL) != SUCCESS)
@@ -53,7 +54,7 @@ static t_status	get_max_eat_count(t_data *data, int argc, char **argv)
 	if (argc == 6)
 	{
 		data->max_eat_count_enabled = true;
-		if (philo_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
+		if (util_atoi(&data->max_eat_count, argv[5], MAX_EAT_COUNT) == FAILURE)
 			status = FAILURE;
 	}
 	else
@@ -69,18 +70,18 @@ t_status	init_data(t_data *data, int argc, char **argv)
 	t_status	status;
 
 	status = SUCCESS;
-	if (philo_atoi(&data->num_of_philo, argv[1], NUM_OF_PHILO) == FAILURE)
+	if (util_atoi(&data->num_of_philo, argv[1], NUM_OF_PHILO) == FAILURE)
 		status = FAILURE;
 	if (data->num_of_philo > 200 && status == SUCCESS)
 	{
 		status = FAILURE;
 		printf("number_of_philosophers cannot be more than 200\n");
 	}
-	if (philo_atoi(&data->time_to_die, argv[2], TIME_TO_DIE) == FAILURE)
+	if (util_atoi(&data->time_to_die, argv[2], TIME_TO_DIE) == FAILURE)
 		status = FAILURE;
-	if (philo_atoi(&data->time_to_eat, argv[3], TIME_TO_EAT) == FAILURE)
+	if (util_atoi(&data->time_to_eat, argv[3], TIME_TO_EAT) == FAILURE)
 		status = FAILURE;
-	if (philo_atoi(&data->time_to_sleep, argv[4], TIME_TO_SLEEP) == FAILURE)
+	if (util_atoi(&data->time_to_sleep, argv[4], TIME_TO_SLEEP) == FAILURE)
 		status = FAILURE;
 	status = get_max_eat_count(data, argc, argv);
 	if (status == SUCCESS)
