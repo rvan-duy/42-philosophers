@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/25 16:22:31 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/26 13:47:09 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/06/02 15:42:06 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ typedef size_t	t_timestamp;
 # define SLEEP_INBETWEEN_PHILO_START 250
 # define MONITORING_DELAY 250
 
-typedef enum e_state {
-	EAT,
-	NOT_EAT
-}	t_state;
-
 typedef struct s_data {
 	size_t			num_of_philo;
 	size_t			time_to_die;
@@ -45,7 +40,6 @@ typedef struct s_data {
 	pthread_mutex_t	*times_eaten_lock;
 	pthread_mutex_t	philo_died_lock;
 	bool			a_philo_died;
-	bool			philos_ate_enough;
 }	t_data;
 
 typedef struct s_philo {
