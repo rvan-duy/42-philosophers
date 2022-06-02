@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/05/25 14:13:48 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/26 13:32:22 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/06/02 15:37:46 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	has_eaten_enough(t_philo *p)
 	if (p->data->max_eat_count_enabled == false)
 		return (false);
 	pthread_mutex_lock(p->times_eaten_lock);
-	if (p->times_eaten >= p->data->max_eat_count)
+	if (p->times_eaten == p->data->max_eat_count)
 	{
 		pthread_mutex_unlock(p->times_eaten_lock);
 		return (true);
