@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/15 14:50:19 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/05/25 15:29:34 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/06/07 12:34:30 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@ static void	grab_forks(t_philo *p)
 {
 	if (grab_fork(p->left_fork, p) == false)
 	{
-		pthread_mutex_unlock(p->left_fork);
 		return ;
 	}
 	if (grab_fork(p->right_fork, p) == false)
 	{
-		pthread_mutex_unlock(p->right_fork);
 		pthread_mutex_unlock(p->left_fork);
 		return ;
 	}
@@ -50,6 +48,8 @@ static void	drop_forks(t_philo *p)
 void	go_eat(t_philo *p)
 {
 	grab_forks(p);
+	if (p->data->num_of_philo == 1)
+		return ;
 	if (print_message("is eating", p) == false)
 		return ;
 	pthread_mutex_lock(p->last_meal_lock);
