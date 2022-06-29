@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/15 14:50:19 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/06/07 12:34:30 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/06/29 12:54:05 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	drop_forks(t_philo *p)
 void	go_eat(t_philo *p)
 {
 	grab_forks(p);
-	if (p->data->num_of_philo == 1)
+	if (p->left_fork == NULL || p->right_fork == NULL)
 		return ;
 	if (print_message("is eating", p) == false)
 		return ;

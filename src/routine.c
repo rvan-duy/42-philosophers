@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 11:35:18 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/06/07 12:34:28 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/06/29 12:54:37 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*routine(void *arg)
 	while (true)
 	{
 		go_eat(p);
-		if (p->data->num_of_philo == 1)
+		if (p->left_fork == NULL || p->right_fork == NULL)
 			return (NULL);
 		go_sleep(p);
 		go_think(p);
