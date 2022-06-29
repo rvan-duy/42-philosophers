@@ -6,7 +6,7 @@
 /*   By: rvan-duy <rvan-duy@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/30 14:11:47 by rvan-duy      #+#    #+#                 */
-/*   Updated: 2022/06/02 15:40:10 by rvan-duy      ########   odam.nl         */
+/*   Updated: 2022/06/29 12:37:00 by rvan-duy      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ t_status	init_data(t_data *data, int argc, char **argv)
 		status = FAILURE;
 	if (util_atoi(&data->time_to_sleep, argv[4], TIME_TO_SLEEP) == FAILURE)
 		status = FAILURE;
-	status = get_max_eat_count(data, argc, argv);
+	if (status == SUCCESS)
+		status = get_max_eat_count(data, argc, argv);
 	if (status == SUCCESS)
 		status = init_mutexes(status, data);
 	return (status);
