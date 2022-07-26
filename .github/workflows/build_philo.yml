@@ -1,4 +1,4 @@
-name: macOS/Ubuntu compile check
+name: macOS/Ubuntu build philo
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  ubuntu_compile_check:
+  ubuntu_build_philo:
 
     runs-on: ubuntu-latest
 
@@ -16,7 +16,7 @@ jobs:
     - name: philo
       run:  make re
 
-  macos_compile_check:
+  macos_build_philo:
 
     runs-on: macos-latest
 
