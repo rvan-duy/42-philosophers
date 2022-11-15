@@ -1,6 +1,6 @@
 # philosophers
-![macOS/Ubuntu compile check](https://github.com/rvan-duy/philosophers/actions/workflows/build_philo.yml/badge.svg)
-[![CodeFactor](https://www.codefactor.io/repository/github/rvan-duy/philosophers/badge/main)](https://www.codefactor.io/repository/github/rvan-duy/philosophers/overview/main)
+![macOS/Ubuntu compile check](https://github.com/rvan-duy/42-philosophers/actions/workflows/build_philo.yml/badge.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/rvan-duy/42-philosophers/badge/main)](https://www.codefactor.io/repository/github/rvan-duy/42-philosophers/overview/main)
 
 This is the fractol project in 42's curriculum. A project which goal it is to explore the philosopher dining problem, using threads and mutexes.
 
